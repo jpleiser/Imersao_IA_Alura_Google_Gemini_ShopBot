@@ -6,7 +6,7 @@
             "type": "python",  
             "request": "launch",  
             "module": "uvicorn",  
-            "args": ["api:app", "--reload"],  
+            "args": ["api:app", "--reload", "--port", "8081"],  
             "jinja": true  
         }  
     ]  

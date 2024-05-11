@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100vh;
+        }
+
+        .input-group-prepend span {
+            width: 50px;
+            background-color: #ff4757;
+            color: black;
+            border: 0 !important;
+        }
+
+        input:focus {
+            outline: 0 0 0 0 !important;
+            box-shadow: 0 0 0 0 !important;
+        }
+
+        .btn-primary {
+            background-color: #ff4757 !important;
+            border: 0 !important;
+            width: 60px;
+        }
+
+        #resultArea {
+            height: 60vh;
+            overflow-y: auto;
+        }
+
+        #footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: transparent;
+        }
+
+        #question {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+    </style>
+    <script>
+        var user_session; // Variável global
+        // Função para fazer a requisição a API
+        function callApi() {
+            fetch("api/welcome")
+                .then((response) => {
+                    // Armazenar valor do header 'user_session' na variável global
+                    user_session =
+                        response.headers.get(
+                            "user-session"
+                        );
+                    // Retornar resposta em formato JSON
+                    return response.json();
+                })
+                .then((data) => {
+                    // Manipulação dos dados recebidos
+                    console.log(data);
+                })
+                .catch((error) => {
+                    console.error("Erro:", error);
+                });
+        }
+
+        // Chamar a função após a página ser completamente carregada
+        window.onload = callApi;
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div id="resultArea" class="row justify-content-center align-items-center">
+            <!-- Response will be printed here -->
+        </div>
+        <div id="footer">
+            <input type="text" id="question" class="form-control" placeholder="Enter your question" />
+            <button class="btn btn-primary">Enviar</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener(
+            "DOMContentLoaded",
+            (event) => {
+                function sendMessage() {
+                    var question =
+                        document.getElementById(
+                            "question"
+                        ).value;
+                    if (question) {
+                        alert("Sessão: " + user_session)
+                        fetch(
+                            "api/send-message",
+                            {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type":
+                                        "application/json",
+                                    "user-session":
+                                        user_session,
+                                },
+                                body: JSON.stringify(
+                                    {
+                                        message: question,
+                                    }
+                                ),
+                            }
+                        )
+                            .then(
+                                (
+                                    response
+                                ) =>
+                                    response.json()
+                            )
+                            .then(
+                                (
+                                    data
+                                ) => {
+                                    console.log(
+                                        data
+                                    );
+                                    displayMessage(
+                                        data
+                                    );
+                                    document.getElementById(
+                                        "question"
+                                    ).value =
+                                        "";
+                                }
+                            )
+                            .catch(
+                                (
+                                    error
+                                ) =>
+                                    console.error(
+                                        "Erro:",
+                                        error
+                                    )
+                            );
+                    }
+                }
+
+                function displayMessage(data) {
+                    var newDiv =
+                        document.createElement(
+                            "div"
+                        );
+                    newDiv.textContent =
+                        JSON.stringify(data);
+                    document.getElementById(
+                        "resultArea"
+                    ).appendChild(newDiv);
+                }
+
+                document.querySelector(
+                    ".btn-primary"
+                ).addEventListener(
+                    "click",
+                    sendMessage
+                );
+
+                document.querySelector(
+                    "#question"
+                ).addEventListener(
+                    "keypress",
+                    function (e) {
+                        if (e.key === "Enter") {
+                            sendMessage();
+                        }
+                    }
+                );
+            }
+        );
+    </script>
+</body>
+
+</html>

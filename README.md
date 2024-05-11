@@ -1,8 +1,10 @@
-# Projeto desafio Imersão IA utilizando Google Gemini
+# Projeto desafio Imersão IA utilizando Google Gemini 
 
-## Nome do App: ShopBot
-O aplicativo **ShopBot**, é um chatbot alimentado pela tecnologia de IA Generativa Gemini, projetado para transformar a forma como você faz compras. O ShopBot emprega o poder do Processamento de Linguagem Natural para entender e responder às suas consultas de forma inteligente e precisa.  
-   
+## Descrição do projeto
+
+No meu desafio criei uma aplicativo chamado **ShopBot**, que é um chatbot alimentado pela tecnologia de IA Generativa Gemini, projetado para transformar a forma como você faz compras. 
+O ShopBot emprega o poder do Processamento de Linguagem Natural para entender e responder às suas consultas de forma inteligente e precisa.
+
 O ShopBot é mais do que apenas um assistente de compras, é o seu guia pessoal para compras inteligentes e econômicas. Aqui estão as principais características deste aplicativo revolucionário:  
    
 - **Chatbot avançado**: O ShopBot utiliza a IA Generativa Gemini para interagir com você de maneira natural e intuitiva. Basta perguntar ao ShopBot onde encontrar o melhor preço para um produto, e ele irá fornecer a resposta em segundos.  
@@ -14,21 +16,6 @@ O ShopBot é mais do que apenas um assistente de compras, é o seu guia pessoal 
 - **Previsão de preços**: O ShopBot monitora as flutuações de preços e pode prever quando é o melhor momento para comprar um produto específico. Isso significa que você pode planejar suas compras de acordo e aproveitar as melhores ofertas.  
    
 > **Observação:** O ShopBot é a ferramenta perfeita para qualquer comprador moderno. Seja você um caçador de ofertas experiente ou um comprador casual, o ShopBot fornece as informações e ferramentas que você precisa para fazer compras inteligentes. Experimente o ShopBot e descubra uma maneira totalmente nova de fazer compras!
-
-## Descrição do projeto para divulgação nas redes sociais:
-**Abrace o poder da compra inteligente com Shopbot!**
-Cansado de ficar pulando de loja em loja para encontrar o melhor preço? Diga olá ao **Shopbot**, o seu novo aliado para compras inteligentes e econômicas!
-
-**Shopbot** é um aplicativo inovador que coloca você no controle do seu orçamento. Com ele, você pode:
-
-- **Desvendar as melhores ofertas:** Compare preços de um mesmo produto em diversas lojas com apenas alguns toques. Encontre a pechincha perfeita sem precisar sair de casa!
-
-- **Mergulhe no seu histórico de compras:** Analise seus hábitos de consumo e identifique áreas onde você pode economizar. Descubra onde você costuma gastar mais e ajuste suas compras futuras de forma inteligente.
-
-- **Domine a arte da previsão de preços:** Monitore as flutuações de preços ao longo do tempo e antecipe as melhores épocas para comprar. Seja um mestre da pechincha e faça seu dinheiro render mais!
-   
-**Shopbot** é a ferramenta essencial para compradores modernos que valorizam seu tempo e dinheiro. Seja você um caçador de ofertas experiente ou um comprador casual, o Shopbot te equipa com as informações e ferramentas necessárias para tomar decisões de compra inteligentes e fazer seu dinheiro valer a pena.
-Junte-se à revolução das compras inteligentes com **Shopbot**!
 
 ## Configurando o ambiente para executar o projeto
 
@@ -616,3 +603,76 @@ CREATE TABLE lista_de_compras (
   FOREIGN KEY (produto_codigo) REFERENCES produto (codigo)
 );
 ````
+
+### 1.14 Prompt instrução do sistema.
+
+Você é um assistente pessoal atencioso especializado em banco de dados relacional com profundamente conhecimento em PNL.
+
+- Como assistente pessoal, você deverá retornar a estrutura do exemplo 1.
+**Exemplo 1:** 
+```json  
+{
+    "question": "question name",
+    "response\": "response name" 
+}  
+```
+
+- Como especialista em banco de dados relacional você deverá analisar o esquema de dados definido abaixo e gerar comandos SQL para executar consultas no banco de dados e deverá retornar a estrutura de exemplo 2:
+**&Exemplo 2:**
+```json
+{
+    "intent": "SQL",
+    "question": "question name",
+    "response": "response name", 
+    "query": "command sql"
+}
+```
+
+- **Esquema de dados**
+```json   
+{  
+     "intent": "SQL",  
+     "question": "question name",  
+     "response": "response name",  
+     "query": "command sql"  
+}
+```
+```sql
+CREATE TABLE loja (
+  codigo INTEGER PRIMARY KEY,
+  nome TEXT NOT NULL,
+  endereco TEXT,
+  cidade TEXT,
+  estado TEXT
+);
+
+CREATE TABLE produto (
+  codigo INTEGER PRIMARY KEY,
+  descricao TEXT NOT NULL,
+  categoria TEXT,
+  unidade_medida TEXT
+);
+
+CREATE TABLE preco_do_produto_na_loja (
+  loja_codigo INTEGER,
+  produto_codigo INTEGER,
+  preco REAL NOT NULL,
+  PRIMARY KEY (loja_codigo, produto_codigo),
+  FOREIGN KEY (loja_codigo) REFERENCES loja (codigo),
+  FOREIGN KEY (produto_codigo) REFERENCES produto (codigo)
+);
+
+CREATE TABLE lista_de_compras (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  quantidade DECIMAL(10, 4) NOT NULL,
+  preco_unitario REAL NOT NULL,
+  valor_compra REAL NOT NULL,
+  data_compra DATE NOT NULL,
+  loja_codigo INTEGER,
+  produto_codigo INTEGER,
+  FOREIGN KEY (loja_codigo) REFERENCES loja (codigo),
+  FOREIGN KEY (produto_codigo) REFERENCES produto (codigo)
+);
+````
+
+### 1.15 Prompt de Aperfeiçoamento para Implementação do RAG.
