@@ -1,8 +1,21 @@
 # Projeto desafio Imersão IA utilizando Google Gemini
 
 ## Nome do App: ShopBot
+O aplicativo **ShopBot**, é um chatbot alimentado pela tecnologia de IA Generativa Gemini, projetado para transformar a forma como você faz compras. O ShopBot emprega o poder do Processamento de Linguagem Natural para entender e responder às suas consultas de forma inteligente e precisa.  
+   
+O ShopBot é mais do que apenas um assistente de compras, é o seu guia pessoal para compras inteligentes e econômicas. Aqui estão as principais características deste aplicativo revolucionário:  
+   
+- **Chatbot avançado**: O ShopBot utiliza a IA Generativa Gemini para interagir com você de maneira natural e intuitiva. Basta perguntar ao ShopBot onde encontrar o melhor preço para um produto, e ele irá fornecer a resposta em segundos.  
+   
+- **Comparação de preços**: O ShopBot permite que você compare preços de um mesmo produto em várias lojas com facilidade. Não é necessário navegar por vários sites ou lojas físicas; o ShopBot faz todo o trabalho pesado para você.  
+   
+- **Análise de histórico de compras**: Com o ShopBot, você pode analisar seus padrões de gastos, identificar onde você está gastando mais e encontrar maneiras de economizar. O ShopBot ajuda você a tomar decisões de compra mais informadas e a manter seu orçamento sob controle.  
+   
+- **Previsão de preços**: O ShopBot monitora as flutuações de preços e pode prever quando é o melhor momento para comprar um produto específico. Isso significa que você pode planejar suas compras de acordo e aproveitar as melhores ofertas.  
+   
+> **Observação:** O ShopBot é a ferramenta perfeita para qualquer comprador moderno. Seja você um caçador de ofertas experiente ou um comprador casual, o ShopBot fornece as informações e ferramentas que você precisa para fazer compras inteligentes. Experimente o ShopBot e descubra uma maneira totalmente nova de fazer compras!
 
-## Descrição do projeto:
+## Descrição do projeto para divulgação nas redes sociais:
 **Abrace o poder da compra inteligente com Shopbot!**
 Cansado de ficar pulando de loja em loja para encontrar o melhor preço? Diga olá ao **Shopbot**, o seu novo aliado para compras inteligentes e econômicas!
 
@@ -15,7 +28,7 @@ Cansado de ficar pulando de loja em loja para encontrar o melhor preço? Diga ol
 - **Domine a arte da previsão de preços:** Monitore as flutuações de preços ao longo do tempo e antecipe as melhores épocas para comprar. Seja um mestre da pechincha e faça seu dinheiro render mais!
    
 **Shopbot** é a ferramenta essencial para compradores modernos que valorizam seu tempo e dinheiro. Seja você um caçador de ofertas experiente ou um comprador casual, o Shopbot te equipa com as informações e ferramentas necessárias para tomar decisões de compra inteligentes e fazer seu dinheiro valer a pena.
-Junte-se à revolução das compras inteligentes com Shopbot!
+Junte-se à revolução das compras inteligentes com **Shopbot**!
 
 ## Configurando o ambiente para executar o projeto
 
@@ -43,6 +56,28 @@ python -m venv venv3_11_9
 ```cmd
 pip install -r requirements.txt
 ```
+
+### Configurando a variável de ambiente para que o app obtenha o token de acesso ao Gemini:
+Aqui estão as instruções passo a passo para criar a variável de ambiente nos sistemas operacionais Windows, Linux e macOS:
+#### Windows
+1. Abra o menu "Iniciar" e pesquise "Variáveis de ambiente". Selecione "Editar as variáveis de ambiente do sistema".
+1. Na janela que aparece, clique em "Variáveis de Ambiente...".
+1. Na janela "Variáveis de Ambiente", clique em "Novo..." abaixo de "Variáveis de usuário para [seu nome de usuário]".
+1. No campo "Nome da variável", insira "GEMINI_TOKEN_KEY".
+1. No campo "Valor da variável", insira o valor do seu token.
+1. Clique em "OK" e "OK" novamente para salvar as alterações.
+
+#### Linux
+1. Abra um terminal.
+1. Digite o seguinte comando: echo 'export GEMINI_TOKEN_KEY="seu_token"' >> ~/.bashrc (substitua "seu_token" pelo valor do seu token).
+1. Recarregue o arquivo .bashrc com o comando: source ~/.bashrc.
+
+#### macOS
+1. Abra um terminal.
+1. Digite o seguinte comando: echo 'export GEMINI_TOKEN_KEY="seu_token"' >> ~/.bash_profile (substitua "seu_token" pelo valor do seu token).
+1. Recarregue o arquivo .bash_profile com o comando: source ~/.bash_profile.
+
+**Observação**: Por favor, substitua "seu_token" pelo valor do seu token. Note que essas alterações farão com que a variável de ambiente esteja disponível apenas para o usuário atual. Se precisar que esteja disponível para todos os usuários, você precisará ajustar as instruções de acordo.
 
 ## 1 Construindo o banco de dados utilizando prompt para ser executado no Google AI Studio
 **Observação**: Todas as informações obtidas para popular esta base de dados são dados púbilcos encontrados na internet utilizando a IA Generativa do Google Gemini.
