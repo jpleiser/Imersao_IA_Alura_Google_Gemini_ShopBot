@@ -1,0 +1,14 @@
+{  
+    "recommendations": [  
+        "ms-python.python",  
+        "ms-python.vscode-pylance",
+        "hediet.vscode-drawio",  
+        "eightbitswide.vscode-drawio",  
+        "yzhang.markdown-all-in-one",  
+        "gera2ld.markmap-vscode",  
+        "gera2ld.vscode-markmap",
+        "bierner.markdown-mermaid",  
+        "tomoyukim.vscode-mermaid-editor"  
+    ]  
+}  
+

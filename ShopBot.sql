@@ -1,95 +1,6 @@
-# Projeto desafio Imersão IA utilizando Google Gemini
-
-## Nome do App: ShopBot
-
-## Descrição do projeto:
-**Abrace o poder da compra inteligente com Shopbot!**
-Cansado de ficar pulando de loja em loja para encontrar o melhor preço? Diga olá ao **Shopbot**, o seu novo aliado para compras inteligentes e econômicas!
-
-**Shopbot** é um aplicativo inovador que coloca você no controle do seu orçamento. Com ele, você pode:
-
-- **Desvendar as melhores ofertas:** Compare preços de um mesmo produto em diversas lojas com apenas alguns toques. Encontre a pechincha perfeita sem precisar sair de casa!
-
-- **Mergulhe no seu histórico de compras:** Analise seus hábitos de consumo e identifique áreas onde você pode economizar. Descubra onde você costuma gastar mais e ajuste suas compras futuras de forma inteligente.
-
-- **Domine a arte da previsão de preços:** Monitore as flutuações de preços ao longo do tempo e antecipe as melhores épocas para comprar. Seja um mestre da pechincha e faça seu dinheiro render mais!
-   
-**Shopbot** é a ferramenta essencial para compradores modernos que valorizam seu tempo e dinheiro. Seja você um caçador de ofertas experiente ou um comprador casual, o Shopbot te equipa com as informações e ferramentas necessárias para tomar decisões de compra inteligentes e fazer seu dinheiro valer a pena.
-Junte-se à revolução das compras inteligentes com Shopbot!
-
-## Configurando o ambiente para executar o projeto
-
-### intalação do Visual Studio Code
-https://code.visualstudio.com/Download
-
-### Intalação do python versão 3.11.9 ou superior:
-https://www.get-python.org/downloads/release/python-3119/
-
-#### Criando o ambiente python:
-```cmd
-python -m venv venv3_11_9
-```
-### Ativando o ambiente python
-```cmd
-.\venv3_11_9\Scripts\activate
-```
-
-### Desativando o ambiente python
-```cmd
-.\venv3_11_9\Scripts\deactivate
-```
-
-### Instalação dos pacotes
-```cmd
-pip install -r requirements.txt
-```
-
-## 1 Construindo o banco de dados utilizando prompt para ser executado no Google AI Studio
-**Observação**: Todas as informações obtidas para popular esta base de dados são dados púbilcos encontrados na internet utilizando a IA Generativa do Google Gemini.
-
-### 1.1 Parâmetros configuração Gemini Studio 
-> Modelo: Gemini 1.5 <span style="color:red;">PREVIEW</span> Pro
-> temperature: 1
-> Safety settings: 
-![](./images/Parametros-geracao-comando.png)
-
-### 1.2 Prompt para criação do esquema de dados DER
-Você é um especialista em banco de dados SQLite e eu quero que você gere um esquema de banco de dados para que eu possa consultar minhas compras em determinadas lojas e comparar os preços entre elas.
-
-Não inclua nenhum comentário, nem antes e nem depois da geração do esquema, liste somente os comandos DDL.
-
-A seguir, vou informar a estrutura de cada tabela e quero que você gere os comandos para a criação.
-**loja:**
->codigo
->nome
->endereco
->cidade
->estado
-
-**produto:**
->codigo 
->descricao
->categoria
->unidade_medida
-
-**preco do produto na loja:**
->preco
-
-**lista de compras:**
->id {número gerado automaticamente pelo banco de dados}
->quantidade tipo de dados numerico com 4 casas decimais
->preco_unitario
->valor_compra
->data_compra
->loja_produto_preco
-
-
-
-### Resultado esperado:
-```sql
 CREATE TABLE loja (
   codigo INTEGER PRIMARY KEY,
-  nome TEXT NOT NULL,
+  nome TEXT,
   endereco TEXT,
   cidade TEXT,
   estado TEXT
@@ -97,97 +8,36 @@ CREATE TABLE loja (
 
 CREATE TABLE produto (
   codigo INTEGER PRIMARY KEY,
-  descricao TEXT NOT NULL,
+  descricao TEXT,
   categoria TEXT,
   unidade_medida TEXT
 );
 
-CREATE TABLE preco_do_produto_na_loja (
+CREATE TABLE loja_produto_preco (
   loja_codigo INTEGER,
   produto_codigo INTEGER,
-  preco REAL NOT NULL,
+  preco REAL,
   PRIMARY KEY (loja_codigo, produto_codigo),
-  FOREIGN KEY (loja_codigo) REFERENCES loja (codigo),
-  FOREIGN KEY (produto_codigo) REFERENCES produto (codigo)
+  FOREIGN KEY (loja_codigo) REFERENCES loja(codigo),
+  FOREIGN KEY (produto_codigo) REFERENCES produto(codigo)
 );
 
-CREATE TABLE lista_de_compras (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  quantidade DECIMAL(10, 4) NOT NULL,
-  preco_unitario REAL NOT NULL,
-  valor_compra REAL NOT NULL,
-  data_compra DATE NOT NULL,
-  loja_codigo INTEGER,
-  produto_codigo INTEGER,
-  FOREIGN KEY (loja_codigo) REFERENCES loja (codigo),
-  FOREIGN KEY (produto_codigo) REFERENCES produto (codigo)
+CREATE TABLE lista_compras (
+  id INTEGER PRIMARY KEY,
+  quantidade DECIMAL(10,4),
+  preco_unitario REAL,
+  valor_compra REAL,
+  data_compra DATE,
+  loja_produto_preco_loja_codigo INTEGER,
+  loja_produto_preco_produto_codigo INTEGER,
+  FOREIGN KEY (loja_produto_preco_loja_codigo, loja_produto_preco_produto_codigo) REFERENCES loja_produto_preco(loja_codigo, produto_codigo)
 );
-```
 
-### 1.3  Prompt para geração da descrição do projeto ShopBot.
-Você é um especialista em marketing de produto e eu gostaria que você gerasse uma descrição para este projeto, destacando as possibilidades de uso para este tipo de aplicação. Ela será utilizada por consumidores para realizar pesquisas de preços, comparando os valores dos produtos entre diferentes lojas. Além disso, o usuário também poderá comparar o histórico de suas compras para acompanhar a variação de preço a partir das compras realizadas nas lojas. O nome do projeto é Shopbot.
-
-### 1.4 Resultado obtido, pode variar dependendo a temperatura ou do modelo selecionado para descrever o projeto.
-
-**Abrace o poder da compra inteligente com Shopbot!**
-Cansado de ficar pulando de loja em loja para encontrar o melhor preço? Diga olá ao **Shopbot**, o seu novo aliado para compras inteligentes e econômicas!
-
-**Shopbot** é um aplicativo inovador que coloca você no controle do seu orçamento. Com ele, você pode:
-
-- **Desvendar as melhores ofertas:** Compare preços de um mesmo produto em diversas lojas com apenas alguns toques. Encontre a pechincha perfeita sem precisar sair de casa!
-
-- **Mergulhe no seu histórico de compras:** Analise seus hábitos de consumo e identifique áreas onde você pode economizar. Descubra onde você costuma gastar mais e ajuste suas compras futuras de forma inteligente.
-
-- **Domine a arte da previsão de preços:** Monitore as flutuações de preços ao longo do tempo e antecipe as melhores épocas para comprar. Seja um mestre da pechincha e faça seu dinheiro render mais!
-   
-**Shopbot** é a ferramenta essencial para compradores modernos que valorizam seu tempo e dinheiro. Seja você um caçador de ofertas experiente ou um comprador casual, o Shopbot te equipa com as informações e ferramentas necessárias para tomar decisões de compra inteligentes e fazer seu dinheiro valer a pena.
-Junte-se à revolução das compras inteligentes com Shopbot!
-
-
-### 1.5 Prompt para gerando dados para popular o banco de dados tabela loja.
-Liste os 4 maiores atacadistas existentes no Brasil, incluindo 1 lojas para cada atacadista. Os dados você pode encontrar em sua base de conhecimento na internet.
-
-Não inclua nenhuma explicação adicional, nem antes e nem depois. Quero que liste somente os comandos SQL para que eu possa utilizar posteriormente no sistema ShopBot.
-
-Gere comandos de inclusão de dados na sintaxe SQL-Lite para incluir os registros na tabela 'loja', preenchendo os seguintes campos:
-
->codigo INTEGER PRIMARY KEY {Gere uma numeração sequencial para este campo}
-nome TEXT
-endereco TEXT
-cidade TEXT
-estado TEXT
-
-### 1.6 Resultado gerado
-```sql
 INSERT INTO loja (codigo, nome, endereco, cidade) VALUES (1, 'Atacadão', 'Avenida Brasil, 123', 'São Paulo');
 INSERT INTO loja (codigo, nome, endereco, cidade) VALUES (2, 'Assaí Atacadista', 'Avenida Paulista, 101112', 'São Paulo');
 INSERT INTO loja (codigo, nome, endereco, cidade) VALUES (3, 'Makro', 'Rua da Consolação, 131415', 'São Paulo');
 INSERT INTO loja (codigo, nome, endereco, cidade) VALUES (4, 'Roldão Atacadista', 'Rua Augusta, 192021', 'São Paulo');
-```
 
-### 1.7 Prompt para geração de dados para popular o banco de dados tabela produto.
-gere uma memoria de 30 produtos da cesta básica. Os dados você pode encontrar em sua base de conhecimento na internet. Liste os produtos incluindo os seguintes campos:
-
->codigo
-descricao
-categoria
-unidade_medida
-
-Quero que use a memoria de produtos da cesta básica e gere comandos sql-lite para eu incluir estes dados em uma tabela com o nome "produto" que irei utilizar posteriormente no banco de dados do ShopBot.
-
-Não é necessário incluir o comando DDL para criação da tabela
-
-Quero que liste somente os comandos SQL sem nenhuma explicação adiconal, nem antes e nem depois.
-
-Abaixo está a estrutura da tabela que será utilizada:
-> codigo INTEGER PRIMARY KEY {Gere uma numeração sequencial para este campo| 
-  codigo INTEGER PRIMARY KEY,
-  descricao TEXT,
-  categoria TEXT,
-  unidade_medida TEXT
-
-### 1.8 Resultado obtido:
-```sql
 INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (1, 'Arroz', 'Grãos', 'kg');
 INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (2, 'Feijão', 'Grãos', 'kg');
 INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (3, 'Óleo de Soja', 'Óleos e Gorduras', 'L');
@@ -218,64 +68,7 @@ INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VA
 INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (28, 'Sabonete', 'Higiene', 'un');
 INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (29, 'Creme Dental', 'Higiene', 'un');
 INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (30, 'Detergente', 'Limpeza', 'L');
-```
 
-### 1.9 Prompt para geração de dados para popular o banco de dados tabela loja_produto.
-Gere uma memoria de preços para 30 produtos para cada atacadista produto relacionados abaixo. O preço você pode gerar de forma aleatória conforme dados existentes na internet. 
-
-Quero que utilize a memória de preços para gerar comandos sql-lite para inserção  dos dados na tabela loja_produto_preco, use a estrutura abaixo para criar os comandos, utilize os codigos do atacadista e o codigo do produto para criar o comando de inserção:
->loja_codigo INTEGER,
-produto_codigo INTEGER,
-preco REAL,
-
-Você deverá listar todas as combinações entre a tabela de loja versus produto, não inclua nenhum comentário, nem antes e nem depois. 
-
-Liste somente os comandos SQL para eu poder utilizar posteriormente.
-
-#### Aqui está a relação de atacadistas:
-|Código|Nome
-|-|-
-|1	|Atacadão
-|2	|Assaí Atacadista
-|3	|Makro
-|4	|Roldão Atacadista
-
-### Aqui está a relação de produtos:
-|Código	|Descrição
-|-|-|
-|1	|Arroz
-|2	|Feijão
-|3	|Óleo de Soja
-|4	|Açúcar
-|5	|Sal
-|6	|Café
-|7	|Macarrão
-|8	|Farinha de Trigo
-|9	|Leite
-|10	|Manteiga
-|11	|Pão Francês
-|12	|Carne
-|13	|Frango
-|14	|Ovos
-|15	|Tomate
-|16	|Cebola
-|17	|Batata
-|18	|Cenoura
-|19	|Banana
-|20	|Maçã
-|21	|Laranja
-|22	|Alface
-|23	|Couve
-|24	|Extrato de Tomate
-|25	|Milho em Conserva
-|26	|Sardinha em Lata
-|27	|Papel Higiênico
-|28	|Sabonete
-|29	|Creme Dental
-|30	|Detergente
-
-### 1.10 Resultado obtido:
-```sql
 INSERT INTO loja_produto_preco (loja_codigo, produto_codigo, preco) VALUES (1, 1, 25.99);
 INSERT INTO loja_produto_preco (loja_codigo, produto_codigo, preco) VALUES (1, 2, 8.75);
 INSERT INTO loja_produto_preco (loja_codigo, produto_codigo, preco) VALUES (1, 3, 12.48);
@@ -396,75 +189,8 @@ INSERT INTO loja_produto_preco (loja_codigo, produto_codigo, preco) VALUES (4, 2
 INSERT INTO loja_produto_preco (loja_codigo, produto_codigo, preco) VALUES (4, 28, 1.9);
 INSERT INTO loja_produto_preco (loja_codigo, produto_codigo, preco) VALUES (4, 29, 3.2);
 INSERT INTO loja_produto_preco (loja_codigo, produto_codigo, preco) VALUES (4, 30, 8.4);
-```
 
 
-### 1.11 Prompt para geração de dados para popular o banco de dados tabela lista_compras.
-Você é especialista en análise de dados. 
-
-Vou fornecer uma tabela com exemplos de dados e quero utilize estes dados para gerar uma memória considerando o menor preço de cada produto loja:
-
-Agora quero que use esta memória e gere comandos sql-lite de insersões de dados para eu utilizar posteriormente,
-
-Na primeira lista você deverá utilizar como data base da compra a data 2024-05-11, inclua todos os registros em um único comando sql.
-
-Considere incluir na quantidade de produto uma variação de quantidade entre 1 a 4 de e calcule o valor total do produto comprado, multiplicando o preço da lista pela quantidade de produtos comprados.
-
-Gere mais 4 listas de compras com datas anteriores à data do item 1, considere criar datas com 3 meses de diferença. Utilize os mesmos produtos selecionados, mas altere o valor unitário dos produtos, decrescendo 2% para cada nova lista gerada.
-
-Gere um comando sql para cada lista de compras
-
-Gere somente os comandos sql-lite para insersão dos dadism sem nenhum comentário, nem antes nem depois.
-
-tabela lista_compras:
->quantidade DECIMAL(10, 4) NOT NULL,
->preco_unitario REAL NOT NULL,
->valor_compra REAL NOT NULL,
->data_compra DATE NOT NULL,
->loja_codigo INTEGER,
->produto_codigo INTEGER,
-
-Exemplo de dados tabela loja_produto_preco:
-|loja_codigo|produto_codigo|preco
-|-|-|-
-|1	|1	|25.99
-|1	|2	|8.75
-|1	|3	|12.48
-|1	|9	|4.59
-|1	|10	|7.98
-|1	|11	|12.5
-|1	|17	|3.98
-|1	|30	|8.5
-|2	|1	|24.9
-|2	|2	|8.5
-|2	|3	|11.98
-|2	|9	|4.39
-|2	|10	|7.75
-|2	|11	|11.8
-|2	|17	|3.85
-|2	|20	|8.5
-|2	|30	|8.2
-|3	|1	|26.5
-|3	|2	|8.9
-|3	|3	|12.8
-|3	|9	|4.65
-|3	|10	|8.1
-|3	|11	|12.8
-|3	|17	|4.1
-|3	|20	|9
-|3	|30	|8.8
-|4	|1	|25.7
-|4	|2	|8.6
-|4	|3	|12.3
-|4	|9	|4.5
-|4	|10	|7.9
-|4	|11	|12.3
-|4	|17	|3.9
-|4	|20	|8.7
-|4	|30	|8.4
-
-### 1.12 Resultado obtido.
-```sql
 INSERT INTO lista_compras (quantidade, preco_unitario, valor_compra, data_compra, loja_codigo, produto_codigo) 
 VALUES 
     (2,24.9,49.8,'2024-05-11',2,1),
@@ -519,65 +245,3 @@ VALUES
     (4,10.854056,43.416224,'2023-05-11',2,11),
     (2,3.5104815,7.020963,'2023-05-11',2,17),
     (1,7.5237456,7.5237456,'2023-05-11',2,30);
-```
-
-### 1.13 Prompt principal utilizado pelo ShopBot:
-Você é um assistente pessoal atencioso especializado em banco de dados relacional com profundamente conhecimento em PNL. 
-
-Como assistente pessoal, você deverá retornar a estrutura do exemplo 1.
-Exemplo 1:
-```json  
-{
-     "question": "question name",  
-     "response": "response name"  
-}  
-```
-
-
-Como especialista em banco de dados relacional você deverá analisar o esquema de dados definido abaixo e gerar comandos SQL para executar consultas no banco de dados e deverá retornar a estrutura de exemplo 2:
-&Exemplo 2:
-```json   
-{  
-     "intent": "SQL",  
-     "question": "question name",  
-     "response": "response name",  
-     "query": "command sql"  
-}
-```
-```sql
-CREATE TABLE loja (
-  codigo INTEGER PRIMARY KEY,
-  nome TEXT NOT NULL,
-  endereco TEXT,
-  cidade TEXT,
-  estado TEXT
-);
-
-CREATE TABLE produto (
-  codigo INTEGER PRIMARY KEY,
-  descricao TEXT NOT NULL,
-  categoria TEXT,
-  unidade_medida TEXT
-);
-
-CREATE TABLE preco_do_produto_na_loja (
-  loja_codigo INTEGER,
-  produto_codigo INTEGER,
-  preco REAL NOT NULL,
-  PRIMARY KEY (loja_codigo, produto_codigo),
-  FOREIGN KEY (loja_codigo) REFERENCES loja (codigo),
-  FOREIGN KEY (produto_codigo) REFERENCES produto (codigo)
-);
-
-CREATE TABLE lista_de_compras (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  quantidade DECIMAL(10, 4) NOT NULL,
-  preco_unitario REAL NOT NULL,
-  valor_compra REAL NOT NULL,
-  data_compra DATE NOT NULL,
-  loja_codigo INTEGER,
-  produto_codigo INTEGER,
-  FOREIGN KEY (loja_codigo) REFERENCES loja (codigo),
-  FOREIGN KEY (produto_codigo) REFERENCES produto (codigo)
-);
-````
