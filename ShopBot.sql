@@ -39,35 +39,35 @@ INSERT INTO loja (codigo, nome, endereco, cidade) VALUES (3, 'Makro', 'Rua da Co
 INSERT INTO loja (codigo, nome, endereco, cidade) VALUES (4, 'Roldão Atacadista', 'Rua Augusta, 192021', 'São Paulo');
 
 INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (1, 'Arroz', 'Grãos', 'kg');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (2, 'Feijão', 'Grãos', 'kg');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (3, 'Óleo de Soja', 'Óleos e Gorduras', 'L');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (4, 'Açúcar', 'Outros', 'kg');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (5, 'Sal', 'Outros', 'kg');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (6, 'Café', 'Bebidas', 'kg');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (7, 'Macarrão', 'Massas', 'kg');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (8, 'Farinha de Trigo', 'Farinhas', 'kg');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (9, 'Leite', 'Laticínios', 'L');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (10, 'Manteiga', 'Laticínios', 'g');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (11, 'Pão Francês', 'Pães', 'un');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (12, 'Carne', 'Carnes', 'kg');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (13, 'Frango', 'Aves', 'kg');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (14, 'Ovos', 'Outros', 'dz');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (15, 'Tomate', 'Frutas e Legumes', 'kg');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (16, 'Cebola', 'Frutas e Legumes', 'kg');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (17, 'Batata', 'Frutas e Legumes', 'kg');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (18, 'Cenoura', 'Frutas e Legumes', 'kg');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (19, 'Banana', 'Frutas e Legumes', 'kg');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (20, 'Maçã', 'Frutas e Legumes', 'kg');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (21, 'Laranja', 'Frutas e Legumes', 'kg');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (22, 'Alface', 'Frutas e Legumes', 'un');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (23, 'Couve', 'Frutas e Legumes', 'kg');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (24, 'Extrato de Tomate', 'Enlatados', 'Lata');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (25, 'Milho em Conserva', 'Enlatados', 'Lata');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (26, 'Sardinha em Lata', 'Enlatados', 'Lata');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (27, 'Papel Higiênico', 'Higiene', 'un');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (28, 'Sabonete', 'Higiene', 'un');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (29, 'Creme Dental', 'Higiene', 'un');
-INSERT INTO produto (codigo, descricao, descricao, categoria, unidade_medida) VALUES (30, 'Detergente', 'Limpeza', 'L');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (2, 'Feijão', 'Grãos', 'kg');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (3, 'Óleo de Soja', 'Óleos e Gorduras', 'L');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (4, 'Açúcar', 'Outros', 'kg');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (5, 'Sal', 'Outros', 'kg');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (6, 'Café', 'Bebidas', 'kg');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (7, 'Macarrão', 'Massas', 'kg');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (8, 'Farinha de Trigo', 'Farinhas', 'kg');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (9, 'Leite', 'Laticínios', 'L');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (10, 'Manteiga', 'Laticínios', 'g');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (11, 'Pão Francês', 'Pães', 'un');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (12, 'Carne', 'Carnes', 'kg');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (13, 'Frango', 'Aves', 'kg');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (14, 'Ovos', 'Outros', 'dz');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (15, 'Tomate', 'Frutas e Legumes', 'kg');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (16, 'Cebola', 'Frutas e Legumes', 'kg');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (17, 'Batata', 'Frutas e Legumes', 'kg');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (18, 'Cenoura', 'Frutas e Legumes', 'kg');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (19, 'Banana', 'Frutas e Legumes', 'kg');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (20, 'Maçã', 'Frutas e Legumes', 'kg');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (21, 'Laranja', 'Frutas e Legumes', 'kg');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (22, 'Alface', 'Frutas e Legumes', 'un');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (23, 'Couve', 'Frutas e Legumes', 'kg');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (24, 'Extrato de Tomate', 'Enlatados', 'Lata');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (25, 'Milho em Conserva', 'Enlatados', 'Lata');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (26, 'Sardinha em Lata', 'Enlatados', 'Lata');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (27, 'Papel Higiênico', 'Higiene', 'un');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (28, 'Sabonete', 'Higiene', 'un');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (29, 'Creme Dental', 'Higiene', 'un');
+INSERT INTO produto (codigo, descricao, categoria, unidade_medida) VALUES (30, 'Detergente', 'Limpeza', 'L');
 
 INSERT INTO loja_produto_preco (loja_codigo, produto_codigo, preco) VALUES (1, 1, 25.99);
 INSERT INTO loja_produto_preco (loja_codigo, produto_codigo, preco) VALUES (1, 2, 8.75);
@@ -190,8 +190,7 @@ INSERT INTO loja_produto_preco (loja_codigo, produto_codigo, preco) VALUES (4, 2
 INSERT INTO loja_produto_preco (loja_codigo, produto_codigo, preco) VALUES (4, 29, 3.2);
 INSERT INTO loja_produto_preco (loja_codigo, produto_codigo, preco) VALUES (4, 30, 8.4);
 
-
-INSERT INTO lista_compras (quantidade, preco_unitario, valor_compra, data_compra, loja_codigo, produto_codigo) 
+INSERT INTO lista_compras (quantidade, preco_unitario, valor_compra, data_compra, loja_produto_preco_loja_codigo, loja_produto_preco_produto_codigo) 
 VALUES 
     (2,24.9,49.8,'2024-05-11',2,1),
     (4,8.5,34,'2024-05-11',2,2),
@@ -202,7 +201,7 @@ VALUES
     (4,3.85,15.4,'2024-05-11',2,17),
     (1,8.2,8.2,'2024-05-11',2,30); 
 
-INSERT INTO lista_compras (quantidade, preco_unitario, valor_compra, data_compra, loja_codigo, produto_codigo) 
+INSERT INTO lista_compras (quantidade, preco_unitario, valor_compra, data_compra, loja_produto_preco_loja_codigo, loja_produto_preco_produto_codigo) 
 VALUES 
     (3,24.402,73.206,'2024-02-11',2,1),
     (2,8.33,16.66,'2024-02-11',2,2),
@@ -213,7 +212,7 @@ VALUES
     (4,3.7615,15.046,'2024-02-11',2,17),
     (2,8.036,16.072,'2024-02-11',2,30);
 
-INSERT INTO lista_compras (quantidade, preco_unitario, valor_compra, data_compra, loja_codigo, produto_codigo) 
+INSERT INTO lista_compras (quantidade, preco_unitario, valor_compra, data_compra, loja_produto_preco_loja_codigo, loja_produto_preco_produto_codigo) 
 VALUES 
   (1,23.90596,23.90596,'2023-11-11',2,1),
   (4,8.1632,32.6528,'2023-11-11',2,2),
@@ -224,7 +223,7 @@ VALUES
   (3,3.67785,11.03355,'2023-11-11',2,17),
   (3,7.86528,23.59584,'2023-11-11',2,30);
 
-INSERT INTO lista_compras (quantidade, preco_unitario, valor_compra, data_compra, loja_codigo, produto_codigo) 
+INSERT INTO lista_compras (quantidade, preco_unitario, valor_compra, data_compra, loja_produto_preco_loja_codigo, loja_produto_preco_produto_codigo) 
 VALUES 
     (2,23.4108804,46.8217608,'2023-08-11',2,1),
     (3,7.99648,23.98944,'2023-08-11',2,2),
@@ -235,7 +234,7 @@ VALUES
     (1,3.594165,3.594165,'2023-08-11',2,17),
     (4,7.694512,30.778048,'2023-08-11',2,30);
 
-INSERT INTO lista_compras (quantidade, preco_unitario, valor_compra, data_compra, loja_codigo, produto_codigo) 
+INSERT INTO lista_compras (quantidade, preco_unitario, valor_compra, data_compra, loja_produto_preco_loja_codigo, loja_produto_preco_produto_codigo) 
 VALUES 
     (4,22.91572119,91.66288476,'2023-05-11',2,1),
     (1,7.830736,7.830736,'2023-05-11',2,2),

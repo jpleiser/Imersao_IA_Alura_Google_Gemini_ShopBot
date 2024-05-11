@@ -3,11 +3,12 @@
 
 <head>
     <title>App</title>
+    <meta charset="ISO-8859-1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color: #e9ecef;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -16,7 +17,7 @@
 
         .input-group-prepend span {
             width: 50px;
-            background-color: #ff4757;
+            background-color: #6c757d;
             color: black;
             border: 0 !important;
         }
@@ -27,7 +28,7 @@
         }
 
         .btn-primary {
-            background-color: #ff4757 !important;
+            background-color: #6c757d !important;
             border: 0 !important;
             width: 60px;
         }
@@ -35,6 +36,14 @@
         #resultArea {
             height: 60vh;
             overflow-y: auto;
+            margin-top: 5px;
+            background-color: #f8f9fa;
+            box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        .card {
+            margin: 0 0 20px 20px;
+            background-color: #f8f9fa;
         }
 
         #footer {
@@ -54,21 +63,15 @@
         }
     </style>
     <script>
-        var user_session; // Variável global
-        // Função para fazer a requisição a API
+        var user_session;
+
         function callApi() {
             fetch("api/welcome")
                 .then((response) => {
-                    // Armazenar valor do header 'user_session' na variável global
-                    user_session =
-                        response.headers.get(
-                            "user-session"
-                        );
-                    // Retornar resposta em formato JSON
+                    user_session = response.headers.get("user-session");
                     return response.json();
                 })
                 .then((data) => {
-                    // Manipulação dos dados recebidos
                     console.log(data);
                 })
                 .catch((error) => {
@@ -76,15 +79,15 @@
                 });
         }
 
-        // Chamar a função após a página ser completamente carregada
-        window.onload = callApi;
+        window.onload = callApi;    
     </script>
 </head>
 
 <body>
     <div class="container-fluid">
-        <div id="resultArea" class="row justify-content-center align-items-center">
-            <!-- Response will be printed here -->
+        <div id="resultArea" class="row justify-content-start align-items-start" style="height: calc( 100vh - 60px); overflow: auto;">
+            <div id="chatArea" class="col-12">
+            </div>
         </div>
         <div id="footer">
             <input type="text" id="question" class="form-control" placeholder="Enter your question" />
@@ -97,94 +100,63 @@
             "DOMContentLoaded",
             (event) => {
                 function sendMessage() {
-                    var question =
-                        document.getElementById(
-                            "question"
-                        ).value;
+                    var question = document.getElementById("question").value;
                     if (question) {
                         alert("Sessão: " + user_session)
-                        fetch(
-                            "api/send-message",
-                            {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type":
-                                        "application/json",
-                                    "user-session":
-                                        user_session,
-                                },
-                                body: JSON.stringify(
-                                    {
-                                        message: question,
-                                    }
-                                ),
-                            }
-                        )
-                            .then(
-                                (
-                                    response
-                                ) =>
-                                    response.json()
-                            )
-                            .then(
-                                (
-                                    data
-                                ) => {
-                                    console.log(
-                                        data
-                                    );
-                                    displayMessage(
-                                        data
-                                    );
-                                    document.getElementById(
-                                        "question"
-                                    ).value =
-                                        "";
-                                }
-                            )
-                            .catch(
-                                (
-                                    error
-                                ) =>
-                                    console.error(
-                                        "Erro:",
-                                        error
-                                    )
-                            );
+                        fetch("api/send-message", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "user-session": user_session,
+                            },
+                            body: JSON.stringify({
+                                message: question,
+                            }),
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+                                console.log(data);
+                                displayMessage(data, false);
+                                document.getElementById("question").value = "";
+                            })
+                            .catch((error) => console.error("Erro:", error));
+
+                        displayMessage(question, true);
                     }
                 }
 
-                function displayMessage(data) {
-                    var newDiv =
-                        document.createElement(
-                            "div"
-                        );
-                    newDiv.textContent =
-                        JSON.stringify(data);
-                    document.getElementById(
-                        "resultArea"
-                    ).appendChild(newDiv);
+                function displayMessage(data, isUser) {
+                    var newDiv = document.createElement("div");
+                    newDiv.classList.add("card", isUser ? "ml-auto" : "mr-auto", "mb-3", "shadow");
+                    newDiv.style.width = '70%';
+
+                    var newBody = document.createElement("div");
+                    newBody.classList.add("card-body");
+
+                    var newTitle = document.createElement("h5");
+                    newTitle.classList.add("card-title");
+                    newTitle.textContent = isUser ? "User Input" : "Chatbot Response";
+
+                    var newText = document.createElement("p");
+                    newText.classList.add("card-text");
+                    newText.textContent = JSON.stringify(data);
+
+                    newBody.appendChild(newTitle);
+                    newBody.appendChild(newText);
+                    newDiv.appendChild(newBody);
+
+                    document.getElementById("chatArea").appendChild(newDiv);
                 }
 
-                document.querySelector(
-                    ".btn-primary"
-                ).addEventListener(
-                    "click",
-                    sendMessage
-                );
+                document.querySelector(".btn-primary").addEventListener("click", sendMessage);
 
-                document.querySelector(
-                    "#question"
-                ).addEventListener(
-                    "keypress",
-                    function (e) {
-                        if (e.key === "Enter") {
-                            sendMessage();
-                        }
+                document.querySelector("#question").addEventListener("keypress", function (e) {
+                    if (e.key === "Enter") {
+                        sendMessage();
                     }
-                );
+                });
             }
-        );
+        );    
     </script>
 </body>
 

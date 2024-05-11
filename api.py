@@ -48,7 +48,7 @@ def read_root(request: Request, response: Response):
         shop_bot:ShopBot = None  
         # Verificando se o usuário já possui uma sessão ativa      
         session_id = request.headers.get('user-session', None)      
-        if session_id is None:    
+        if session_id is None:   
             session_id = str(uuid.uuid4())    
             shop_bot = ShopBot()    
             sessions[session_id] = shop_bot  
@@ -60,7 +60,7 @@ def read_root(request: Request, response: Response):
   
         return JSONResponse(  
             content={
-                "question": "Bom dia", 
+                "question": "Bom dia",
                 "response": "Seja bem vindo",
                 "status": 200  
             },  
@@ -70,7 +70,7 @@ def read_root(request: Request, response: Response):
     except HTTPException as err:    
         raise HTTPException(status_code=400, detail=str(err))  
     except Exception as e:  
-        raise HTTPException(status_code=500, detail="Internal server error")  
+        raise HTTPException(status_code=500, detail=str(e))  
 
 
 class Message(BaseModel):  
@@ -82,7 +82,7 @@ async def send_message(request: Request, message: Message):
         session_id = request.headers.get('user-session', None)    
         if session_id is not None:    
             shop_bot = sessions.get(session_id, None)    
-            if shop_bot is not None:    
+            if shop_bot is not None: 
                 response = shop_bot.send_message(message.message)    
                 return JSONResponse(content=response)    
             else:    

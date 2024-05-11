@@ -17,6 +17,8 @@ class ShopBot:
         self.response = None
         self.query = None
 
+        self.history = []
+
         genai.configure(api_key=os.getenv("GEMINI_TOKEN_KEY"))
 
         self.step:str = ShopBot.STEP_WELCOME
@@ -48,14 +50,82 @@ class ShopBot:
         },
         ]
 
-        system_instruction = "Você é um assistente pessoal atencioso especializado em banco de dados relacional com profundamente conhecimento em PNL. \n  \nComo assistente pessoal, você deverá retornar a estrutura do exemplo 1.\nExemplo 1:\n```json  \n{\n     \"question\": \"question name\",  \n     \"response\": \"response name\"  \n}  \n```\n\n\nComo especialista em banco de dados relacional você deverá analisar o esquema de dados definido abaixo e gerar comandos SQL para executar consultas no banco de dados e deverá retornar a estrutura de exemplo 2:\n&Exemplo 2:\n```json   \n{  \n     \"intent\": \"SQL\",  \n     \"question\": \"question name\",  \n     \"response\": \"response name\",  \n     \"query\": \"command sql\"  \n}\n```\n```sql\nCREATE TABLE loja (\n  codigo INTEGER PRIMARY KEY,\n  nome TEXT NOT NULL,\n  endereco TEXT,\n  cidade TEXT,\n  estado TEXT\n);\n\nCREATE TABLE produto (\n  codigo INTEGER PRIMARY KEY,\n  descricao TEXT NOT NULL,\n  categoria TEXT,\n  unidade_medida TEXT\n);\n\nCREATE TABLE preco_do_produto_na_loja (\n  loja_codigo INTEGER,\n  produto_codigo INTEGER,\n  preco REAL NOT NULL,\n  PRIMARY KEY (loja_codigo, produto_codigo),\n  FOREIGN KEY (loja_codigo) REFERENCES loja (codigo),\n  FOREIGN KEY (produto_codigo) REFERENCES produto (codigo)\n);\n\nCREATE TABLE lista_de_compras (\n  id INTEGER PRIMARY KEY AUTOINCREMENT,\n  quantidade DECIMAL(10, 4) NOT NULL,\n  preco_unitario REAL NOT NULL,\n  valor_compra REAL NOT NULL,\n  data_compra DATE NOT NULL,\n  loja_codigo INTEGER,\n  produto_codigo INTEGER,\n  FOREIGN KEY (loja_codigo) REFERENCES loja (codigo),\n  FOREIGN KEY (produto_codigo) REFERENCES produto (codigo)\n);\n```"
+        system_instruction = """
+            Você é um assistente pessoal atencioso especializado em banco de dados relacional com profundamente conhecimento em PNL.
+
+            - Como assistente pessoal, você deverá retornar a estrutura do exemplo 1.
+            **Exemplo 1:** 
+            ```json  
+            {
+                "question": "question name",
+                "response\": "response name" 
+            }  
+            ```
+
+            - Como especialista em banco de dados relacional você deverá analisar o esquema de dados definido abaixo e gerar comandos SQL para executar consultas no banco de dados e deverá retornar a estrutura de exemplo 2:
+            **&Exemplo 2:**
+            ```json
+            {
+                "intent": "SQL",
+                "question": "question name",
+                "response": "response name", 
+                "query": "command sql"
+            }
+            ```
+
+            - **Esquema de dados**
+            ```json   
+            {  
+                "intent": "SQL",  
+                "question": "question name",  
+                "response": "response name",  
+                "query": "command sql"  
+            }
+            ```
+            ```sql
+                CREATE TABLE loja (
+                codigo INTEGER PRIMARY KEY,
+                nome TEXT,
+                endereco TEXT,
+                cidade TEXT,
+                estado TEXT
+                );
+
+                CREATE TABLE produto (
+                codigo INTEGER PRIMARY KEY,
+                descricao TEXT,
+                categoria TEXT,
+                unidade_medida TEXT
+                );
+
+                CREATE TABLE loja_produto_preco (
+                loja_codigo INTEGER,
+                produto_codigo INTEGER,
+                preco REAL,
+                PRIMARY KEY (loja_codigo, produto_codigo),
+                FOREIGN KEY (loja_codigo) REFERENCES loja(codigo),
+                FOREIGN KEY (produto_codigo) REFERENCES produto(codigo)
+                );
+
+                CREATE TABLE lista_compras (
+                id INTEGER PRIMARY KEY,
+                quantidade DECIMAL(10,4),
+                preco_unitario REAL,
+                valor_compra REAL,
+                data_compra DATE,
+                loja_produto_preco_loja_codigo INTEGER,
+                loja_produto_preco_produto_codigo INTEGER,
+                FOREIGN KEY (loja_produto_preco_loja_codigo, loja_produto_preco_produto_codigo) REFERENCES loja_produto_preco(loja_codigo, produto_codigo)
+                );
+            ````
+        """
 
         self.model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest",
                                     generation_config=self.generation_config,
                                     system_instruction=system_instruction,
                                     safety_settings=self.safety_settings)
 
-        self.convo = self.model.start_chat(history=[])
+        self.convo = self.model.start_chat(history=self.history)
 
     
     def __send_message_rag(self,question:str):
@@ -76,8 +146,12 @@ class ShopBot:
 
 
     def __clean_json(self, json_text:str) -> str:
-        json_text = json_text.replace("```json", "")
-        json_text = json_text.replace("```","")
+        startIndex:int = json_text.find("```json")
+        if startIndex >= 0:
+            json_text= json_text[startIndex+len("```json"):]
+            endIndex:int = json_text.find("```")
+            if endIndex > startIndex:
+                return json_text[0: endIndex]
         return json_text
 
 
@@ -119,6 +193,8 @@ class ShopBot:
 
         if len(markdown_result) == 0:
             markdown_result = None
+        else:
+            print(markdown_result)
 
         return markdown_result  
 
@@ -133,13 +209,7 @@ class ShopBot:
 
         self.__refresh_data(objeto_json)
 
-        if( self.intent is None):     
-            return self.response
-        elif self.intent == "SQL":
-            pass
-        else:
-            return  
-
+        return self.response
 
     def send_message(self, question:str):
 
@@ -151,7 +221,6 @@ class ShopBot:
         objeto_json = json.loads(response)
         self.__refresh_data(objeto_json)
         if( self.intent is None):
-            resulte = self.__executeQuery(self.query)
             return {
                 "question": self.question,
                 "response": self.response,
@@ -159,10 +228,11 @@ class ShopBot:
             }            
 
         elif self.intent == "SQL":
-            resulte = self.__executeQuery(self.query)
+            result = self.__executeQuery(self.query)
+            # prompt = f"{question}\n Dados:\n{resulte}"
             return {
                 "question": self.question,
-                "response": self.__send_message_rag(f"{question}\n Dados:\n{resulte}"),
+                "response": self.response+"\n"+result,
                 "status": 200
             }
         else:

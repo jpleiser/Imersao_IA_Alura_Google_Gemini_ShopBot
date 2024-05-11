@@ -487,7 +487,7 @@ Exemplo de dados tabela loja_produto_preco:
 
 ### 1.12 Resultado obtido.
 ```sql
-INSERT INTO lista_compras (quantidade, preco_unitario, valor_compra, data_compra, loja_codigo, produto_codigo) 
+INSERT INTO lista_compras (quantidade, preco_unitario, valor_compra, data_compra, loja_produto_preco_loja_codigo, loja_produto_preco_produto_codigo) 
 VALUES 
     (2,24.9,49.8,'2024-05-11',2,1),
     (4,8.5,34,'2024-05-11',2,2),
@@ -498,7 +498,7 @@ VALUES
     (4,3.85,15.4,'2024-05-11',2,17),
     (1,8.2,8.2,'2024-05-11',2,30); 
 
-INSERT INTO lista_compras (quantidade, preco_unitario, valor_compra, data_compra, loja_codigo, produto_codigo) 
+INSERT INTO lista_compras (quantidade, preco_unitario, valor_compra, data_compra, loja_produto_preco_loja_codigo, loja_produto_preco_produto_codigo) 
 VALUES 
     (3,24.402,73.206,'2024-02-11',2,1),
     (2,8.33,16.66,'2024-02-11',2,2),
@@ -509,7 +509,7 @@ VALUES
     (4,3.7615,15.046,'2024-02-11',2,17),
     (2,8.036,16.072,'2024-02-11',2,30);
 
-INSERT INTO lista_compras (quantidade, preco_unitario, valor_compra, data_compra, loja_codigo, produto_codigo) 
+INSERT INTO lista_compras (quantidade, preco_unitario, valor_compra, data_compra, loja_produto_preco_loja_codigo, loja_produto_preco_produto_codigo) 
 VALUES 
   (1,23.90596,23.90596,'2023-11-11',2,1),
   (4,8.1632,32.6528,'2023-11-11',2,2),
@@ -520,7 +520,7 @@ VALUES
   (3,3.67785,11.03355,'2023-11-11',2,17),
   (3,7.86528,23.59584,'2023-11-11',2,30);
 
-INSERT INTO lista_compras (quantidade, preco_unitario, valor_compra, data_compra, loja_codigo, produto_codigo) 
+INSERT INTO lista_compras (quantidade, preco_unitario, valor_compra, data_compra, loja_produto_preco_loja_codigo, loja_produto_preco_produto_codigo) 
 VALUES 
     (2,23.4108804,46.8217608,'2023-08-11',2,1),
     (3,7.99648,23.98944,'2023-08-11',2,2),
@@ -531,7 +531,7 @@ VALUES
     (1,3.594165,3.594165,'2023-08-11',2,17),
     (4,7.694512,30.778048,'2023-08-11',2,30);
 
-INSERT INTO lista_compras (quantidade, preco_unitario, valor_compra, data_compra, loja_codigo, produto_codigo) 
+INSERT INTO lista_compras (quantidade, preco_unitario, valor_compra, data_compra, loja_produto_preco_loja_codigo, loja_produto_preco_produto_codigo) 
 VALUES 
     (4,22.91572119,91.66288476,'2023-05-11',2,1),
     (1,7.830736,7.830736,'2023-05-11',2,2),
@@ -544,68 +544,6 @@ VALUES
 ```
 
 ### 1.13 Prompt principal utilizado pelo ShopBot:
-Você é um assistente pessoal atencioso especializado em banco de dados relacional com profundamente conhecimento em PNL. 
-
-Como assistente pessoal, você deverá retornar a estrutura do exemplo 1.
-Exemplo 1:
-```json  
-{
-     "question": "question name",  
-     "response": "response name"  
-}  
-```
-
-
-Como especialista em banco de dados relacional você deverá analisar o esquema de dados definido abaixo e gerar comandos SQL para executar consultas no banco de dados e deverá retornar a estrutura de exemplo 2:
-&Exemplo 2:
-```json   
-{  
-     "intent": "SQL",  
-     "question": "question name",  
-     "response": "response name",  
-     "query": "command sql"  
-}
-```
-```sql
-CREATE TABLE loja (
-  codigo INTEGER PRIMARY KEY,
-  nome TEXT NOT NULL,
-  endereco TEXT,
-  cidade TEXT,
-  estado TEXT
-);
-
-CREATE TABLE produto (
-  codigo INTEGER PRIMARY KEY,
-  descricao TEXT NOT NULL,
-  categoria TEXT,
-  unidade_medida TEXT
-);
-
-CREATE TABLE preco_do_produto_na_loja (
-  loja_codigo INTEGER,
-  produto_codigo INTEGER,
-  preco REAL NOT NULL,
-  PRIMARY KEY (loja_codigo, produto_codigo),
-  FOREIGN KEY (loja_codigo) REFERENCES loja (codigo),
-  FOREIGN KEY (produto_codigo) REFERENCES produto (codigo)
-);
-
-CREATE TABLE lista_de_compras (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  quantidade DECIMAL(10, 4) NOT NULL,
-  preco_unitario REAL NOT NULL,
-  valor_compra REAL NOT NULL,
-  data_compra DATE NOT NULL,
-  loja_codigo INTEGER,
-  produto_codigo INTEGER,
-  FOREIGN KEY (loja_codigo) REFERENCES loja (codigo),
-  FOREIGN KEY (produto_codigo) REFERENCES produto (codigo)
-);
-````
-
-### 1.14 Prompt instrução do sistema.
-
 Você é um assistente pessoal atencioso especializado em banco de dados relacional com profundamente conhecimento em PNL.
 
 - Como assistente pessoal, você deverá retornar a estrutura do exemplo 1.
@@ -613,7 +551,7 @@ Você é um assistente pessoal atencioso especializado em banco de dados relacio
 ```json  
 {
     "question": "question name",
-    "response\": "response name" 
+    "response": "response name" 
 }  
 ```
 
@@ -631,48 +569,47 @@ Você é um assistente pessoal atencioso especializado em banco de dados relacio
 - **Esquema de dados**
 ```json   
 {  
-     "intent": "SQL",  
-     "question": "question name",  
-     "response": "response name",  
-     "query": "command sql"  
+    "intent": "SQL",  
+    "question": "question name",  
+    "response": "response name",  
+    "query": "command sql"  
 }
 ```
 ```sql
-CREATE TABLE loja (
-  codigo INTEGER PRIMARY KEY,
-  nome TEXT NOT NULL,
-  endereco TEXT,
-  cidade TEXT,
-  estado TEXT
-);
+    CREATE TABLE loja (
+    codigo INTEGER PRIMARY KEY,
+    nome TEXT,
+    endereco TEXT,
+    cidade TEXT,
+    estado TEXT
+    );
 
-CREATE TABLE produto (
-  codigo INTEGER PRIMARY KEY,
-  descricao TEXT NOT NULL,
-  categoria TEXT,
-  unidade_medida TEXT
-);
+    CREATE TABLE produto (
+    codigo INTEGER PRIMARY KEY,
+    descricao TEXT,
+    categoria TEXT,
+    unidade_medida TEXT
+    );
 
-CREATE TABLE preco_do_produto_na_loja (
-  loja_codigo INTEGER,
-  produto_codigo INTEGER,
-  preco REAL NOT NULL,
-  PRIMARY KEY (loja_codigo, produto_codigo),
-  FOREIGN KEY (loja_codigo) REFERENCES loja (codigo),
-  FOREIGN KEY (produto_codigo) REFERENCES produto (codigo)
-);
+    CREATE TABLE loja_produto_preco (
+    loja_codigo INTEGER,
+    produto_codigo INTEGER,
+    preco REAL,
+    PRIMARY KEY (loja_codigo, produto_codigo),
+    FOREIGN KEY (loja_codigo) REFERENCES loja(codigo),
+    FOREIGN KEY (produto_codigo) REFERENCES produto(codigo)
+    );
 
-CREATE TABLE lista_de_compras (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  quantidade DECIMAL(10, 4) NOT NULL,
-  preco_unitario REAL NOT NULL,
-  valor_compra REAL NOT NULL,
-  data_compra DATE NOT NULL,
-  loja_codigo INTEGER,
-  produto_codigo INTEGER,
-  FOREIGN KEY (loja_codigo) REFERENCES loja (codigo),
-  FOREIGN KEY (produto_codigo) REFERENCES produto (codigo)
-);
+    CREATE TABLE lista_compras (
+    id INTEGER PRIMARY KEY,
+    quantidade DECIMAL(10,4),
+    preco_unitario REAL,
+    valor_compra REAL,
+    data_compra DATE,
+    loja_produto_preco_loja_codigo INTEGER,
+    loja_produto_preco_produto_codigo INTEGER,
+    FOREIGN KEY (loja_produto_preco_loja_codigo, loja_produto_preco_produto_codigo) REFERENCES loja_produto_preco(loja_codigo, produto_codigo)
+    );
 ````
 
-### 1.15 Prompt de Aperfeiçoamento para Implementação do RAG.
+### 1.14 Prompt de Aperfeiçoamento para Implementação do RAG.

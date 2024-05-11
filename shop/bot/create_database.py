@@ -10,7 +10,7 @@ def CreateDatabase():
         c = conn.cursor()  
     
         # Abra o arquivo SQL e leia-o  
-        with open('ShopBot.sql', 'r') as sql_file:  
+        with open('ShopBot.sql', 'r', encoding='utf-8') as sql_file:  
             sql_commands = sql_file.read()  
     
         # Divida o arquivo em comandos individuais  
