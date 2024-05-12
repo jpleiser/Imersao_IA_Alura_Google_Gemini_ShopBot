@@ -46,7 +46,7 @@
         .card {
             margin: 0 0 20px 20px;
             background-color: #f8f9fa;
-            max-height: 500px;
+            max-height: 600px;
             /* Limita a altura do card */
             overflow: auto;
             /* Adiciona rolagem automática */
@@ -92,37 +92,6 @@
     <script>
         var user_session;
 
-        function callApi() {
-            fetch("api/welcome")
-                .then((response) => {
-                    user_session = response.headers.get("user-session");
-                    return response.json();
-                })
-                .then((data) => {
-                    console.log(data);
-                })
-                .catch((error) => {
-                    console.error("Erro:", error);
-                });
-        }
-
-        window.onload = callApi;            
-    </script>
-</head>
-
-<body>
-    <div class="container-fluid">
-        <div id="resultArea" class="row justify-content-start align-items-start" style="height: calc( 100vh - 60px); overflow: auto;">
-            <div id="chatArea" class="col-12">
-            </div>
-        </div>
-        <div id="footer">
-            <input type="text" id="question" class="form-control" placeholder="Enter your question" />
-            <button class="btn btn-primary">Enviar</button>
-        </div>
-    </div>
-
-    <script>
         function extractMarkdown(text) {
             let regex = /```markdown([\s\S]*?)```/g;
             let match;
@@ -156,6 +125,98 @@
             chatArea.scrollTop = chatArea.scrollHeight;
         }
 
+
+        function displayMessage(data, isUser, welcome) {
+            var newDiv = document.createElement("div");
+            newDiv.classList.add("card", "mb-3", "shadow");
+            newDiv.style.width = '90%';
+
+            if (isUser) {
+                newDiv.classList.add("ml-auto", "user-card");
+            } else {
+                newDiv.classList.add("mr-auto", "bot-card");
+            }
+
+            var newBody = document.createElement("div");
+            newBody.classList.add("card-body");
+
+            var newTitle = document.createElement("h5");
+            newTitle.classList.add("card-title");
+
+            var icon = document.createElement("i");
+
+            icon.classList.add("bi", isUser ? "bi-person-fill" : "bi-robot");
+            newTitle.appendChild(icon);
+
+            var titleText = document.createTextNode(isUser ? "Usuário" : "ShopBot");
+            newTitle.appendChild(titleText);
+
+            newBody.appendChild(newTitle);
+
+            if (!isUser && data.response) {
+                var markdownParts = extractMarkdown(data.response);
+                for (var part of markdownParts) {
+                    var newText = document.createElement(part.type === 'text' ? "p" : "div");
+                    newText.classList.add("card-text");
+                    if (welcome) {
+                        newText.innerHTML = part.value
+                    }
+                    else {
+                        if (part.type === 'text') {
+                            newText.textContent = part.value.replace(/"/g, '');
+                        } else {
+                            newText.innerHTML = marked.parse(part.value);
+                        }
+                    }
+                    newBody.appendChild(newText);
+                }
+            } else {
+                var newText = document.createElement("p");
+                newText.classList.add("card-text");
+                newText.textContent = data;
+                newBody.appendChild(newText);
+            }
+
+            newDiv.appendChild(newBody);
+            document.getElementById("chatArea").appendChild(newDiv);
+
+            scrollToBottom();
+        }
+
+
+        function callApi() {
+            fetch("api/welcome")
+                .then((response) => {
+                    user_session = response.headers.get("user-session");
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log(data);
+                    displayMessage(data, false, true);  // Adicionado esta linha  
+                })
+                .catch((error) => {
+                    console.error("Erro:", error);
+                });
+        }
+
+
+        window.onload = callApi;            
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div id="resultArea" class="row justify-content-start align-items-start" style="height: calc( 100vh - 60px); overflow: auto;">
+            <div id="chatArea" class="col-12">
+            </div>
+        </div>
+        <div id="footer">
+            <input type="text" id="question" class="form-control" placeholder="Enter your question" />
+            <button class="btn btn-primary">Enviar</button>
+        </div>
+    </div>
+
+    <script>
         document.addEventListener(
             "DOMContentLoaded",
             (event) => {
@@ -175,65 +236,13 @@
                             .then((response) => response.json())
                             .then((data) => {
                                 console.log(data);
-                                displayMessage(data, false);
+                                displayMessage(data, false, false);
                                 document.getElementById("question").value = "";
                             })
                             .catch((error) => console.error("Erro:", error));
 
-                        displayMessage(question, true);
+                        displayMessage(question, true, false);
                     }
-                }
-
-                function displayMessage(data, isUser) {
-                    var newDiv = document.createElement("div");
-                    newDiv.classList.add("card", "mb-3", "shadow");
-                    newDiv.style.width = '90%';
-
-                    if (isUser) {
-                        newDiv.classList.add("ml-auto", "user-card");
-                    } else {
-                        newDiv.classList.add("mr-auto", "bot-card");
-                    }
-
-                    var newBody = document.createElement("div");
-                    newBody.classList.add("card-body");
-
-                    var newTitle = document.createElement("h5");
-                    newTitle.classList.add("card-title");
-
-                    var icon = document.createElement("i");
-
-                    icon.classList.add("bi", isUser ? "bi-person-fill" : "bi-robot");
-                    newTitle.appendChild(icon);
-
-                    var titleText = document.createTextNode(isUser ? "Usuário" : "ShopBot");
-                    newTitle.appendChild(titleText);
-
-                    newBody.appendChild(newTitle);
-
-                    if (!isUser && data.response) {
-                        var markdownParts = extractMarkdown(data.response);
-                        for (var part of markdownParts) {
-                            var newText = document.createElement(part.type === 'text' ? "p" : "div");
-                            newText.classList.add("card-text");
-                            if (part.type === 'text') {
-                                newText.textContent = part.value.replace(/"/g, '');
-                            } else {
-                                newText.innerHTML = marked.parse(part.value);
-                            }
-                            newBody.appendChild(newText);
-                        }
-                    } else {
-                        var newText = document.createElement("p");
-                        newText.classList.add("card-text");
-                        newText.textContent = data;
-                        newBody.appendChild(newText);
-                    }
-
-                    newDiv.appendChild(newBody);
-                    document.getElementById("chatArea").appendChild(newDiv);
-
-                    scrollToBottom();
                 }
 
                 document.querySelector(".btn-primary").addEventListener("click", sendMessage);

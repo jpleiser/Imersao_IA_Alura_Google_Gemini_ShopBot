@@ -106,6 +106,8 @@ class ShopBot:
                     produto ON lista_de_compras.produto_codigo = produto.codigo;  
             
             ]
+
+            
             Exemplos de consulta de preços produto loja:
             - Usuario: [
                 - Qual loja possui o menor preço do produto arroz
@@ -114,20 +116,45 @@ class ShopBot:
             ]
             - Exemplo de reposta:[
                 SELECT   
-                    loja.nome AS Loja,   
-                    loja.endereco AS Endereco,   
-                    loja.cidade AS Cidade,   
-                    loja.estado AS Estado,   
-                    produto.descricao AS Produto,   
-                    produto.categoria AS Categoria,   
-                    produto.unidade_medida AS Unidade,   
-                    preco_do_produto_na_loja.preco AS Preco  
+                        loja.nome AS Loja,   
+                        loja.endereco AS Endereco,   
+                        loja.cidade AS Cidade,   
+                        loja.estado AS Estado,   
+                        produto.descricao AS Produto,   
+                        produto.categoria AS Categoria,   
+                        produto.unidade_medida AS Unidade,   
+                        loja_produto_preco.preco AS Preco  
                 FROM   
-                    preco_do_produto_na_loja  
-                INNER JOIN   
-                    loja ON preco_do_produto_na_loja.loja_codigo = loja.codigo  
-                INNER JOIN   
-                    produto ON preco_do_produto_na_loja.produto_codigo = produto.codigo;              
+                        loja_produto_preco 
+                        INNER JOIN   
+                                loja ON loja_produto_preco.loja_codigo = loja.codigo  
+                        INNER JOIN   
+                                produto ON loja_produto_preco.produto_codigo = produto.codigo;              
+
+            ]
+
+            
+            Exemplos de consulta de menor, maior, média de preços produto loja:
+            - Usuario: [
+                - Em que loja eu posso fazer compras e pagar o menor preço para o arroz, feijão e papel higiênico
+            ]
+            - Exemplo de reposta:[
+                SELECT   
+                        loja.nome AS Loja,   
+                        loja.endereco AS Endereco,   
+                        loja.cidade AS Cidade,   
+                        loja.estado AS Estado,   
+                        produto.descricao AS Produto,   
+                        produto.categoria AS Categoria,   
+                        produto.unidade_medida AS Unidade,   
+                        loja_produto_preco.preco AS Preco  
+                FROM   
+                        loja_produto_preco 
+                        INNER JOIN   
+                                loja ON loja_produto_preco.loja_codigo = loja.codigo  
+                        INNER JOIN   
+                                produto ON loja_produto_preco.produto_codigo = produto.codigo;              
+
             ]
 
             - **Esquema de dados**
@@ -225,10 +252,7 @@ class ShopBot:
         # Conecte-se ao banco de dados SQLite (ou crie se não existir)    
         with sqlite3.connect('ShopBot.db') as connection:    
             cursor = connection.cursor()    
-            try:  
-                if query is None:
-                    return self.response
-                
+            try:                 
                 # Executar uma consulta SQL    
                 cursor.execute(query)    
                 
@@ -262,27 +286,38 @@ class ShopBot:
 
     def welcome(self):
 
+        # Eu monitoro as flutuações de preços e posso até prever o melhor momento para você comprar um produto específico 📈.  
+
         welcome:str = """
-            👋 Olá e seja bem-vindo ao ShopBot! 🤖💼 Seu assistente pessoal para compras inteligentes e econômicas. Estou aqui para ajudá-lo a encontrar as melhores ofertas 🛍️, comparar preços 💰 e analisar seu histórico de compras 📊 para que você possa tomar decisões de compra mais informadas.  
             
-            Meu objetivo é tornar suas compras mais eficientes e econômicas. Com a tecnologia avançada de IA Generativa Gemini, posso responder suas perguntas de maneira natural e intuitiva. Quer saber onde encontrar o melhor preço para um produto? 🎯 É só perguntar! Eu posso comparar preços em várias lojas, permitindo que você economize tempo ⏳ e dinheiro 💵.  
+            👋 Olá seja bem-vindo ao <b>ShopBot</b>! 🤖 seu assistente pessoal para compras inteligentes e econômicas. 
+            Estou aqui para ajudá-lo a encontrar as melhores ofertas 🛍️, comparar preços 💰 e analisar seu histórico 
+            de compras 📊 para que você possa tomar decisões de compra mais acertivas.  
+            <br/>
+            Meu objetivo é tornar suas compras mais eficientes e econômicas.
+            Quer saber onde encontrar o melhor preço para um produto? 
+            <br/>
+            É só perguntar! Eu posso comparar preços em várias lojas, permitindo que você economize tempo ⏳ 
+            e dinheiro 💵.  
+            <br/>
+            Além disso, posso analisar seus padrões de gastos 💳 e ajudá-lo a identificar áreas onde você pode economizar. 
+            <hr/>
+
+            Aqui estão alguns exemplos de perguntas que você pode fazer:  
             
-            Além disso, posso analisar seus padrões de gastos 💳 e ajudá-lo a identificar áreas onde você pode economizar. Eu monitoro as flutuações de preços e posso até prever o melhor momento para você comprar um produto específico 📈.  
-            
-            Aqui estão alguns exemplos de perguntas que você pode me fazer:  
-            
-            - Liste os preços da loja atacadão 🏪.  
-            - Liste a loja onde o café é mais barato ☕.  
-            - Liste as minhas compras deste mês 📅.  
-            - Qual foi a minha primeira compra 🛒?  
-            - Liste todas as minhas compras 📝.  
-            - Sumarize minhas compras por mês e ano 🗓️.  
-            - Quais foram as lojas que eu comprei neste mês 🏬?  
-            - Quais produtos eu paguei mais barato e em que loja 💲🏬?  
-            - Qual loja possui o menor preço do produto arroz 🍚?  
-            - Liste os produtos e as lojas que possuem o menor preço 🔍.  
-            - Liste as 2 lojas que possuem o menor preço para o produto feijão 🍛.  
-            
+            <li> Liste os preços da loja atacadão.  
+            <li> Liste a loja onde o café é mais barato.  
+            <li> Liste as minhas compras deste mês 📅.  
+            <li> Qual foi a minha primeira compra?  
+            <li> Liste todas as minhas compras.  
+            <li> Sumarize minhas compras por mês e ano 🗓️.  
+            <li> Quais foram as lojas que eu comprei neste mês?  
+            <li> Quais produtos eu paguei mais barato e em que loja 💲🏬?  
+            <li> Qual loja possui o menor preço do produto arroz?  
+            <li> Liste os produtos e as lojas que possuem o menor preço.  
+            <li> Liste 2 lojas que possuem o menor preço para o produto feijão.  
+            <br>
+            <br>
             Estou aqui para ajudá-lo a fazer compras inteligentes. Vamos começar? 🚀
         """
         # self.convo.send_message("Bom dia.")
@@ -313,9 +348,17 @@ class ShopBot:
             }            
 
         elif self.intent == "SQL":
+            print(self.question)            
+            if self.query is None or len(self.query) == 0:
+                return {
+                    "question": self.question,
+                    "response": self.response,
+                    "status": 200
+                }
+            print( self.question)
+
             result = self.__executeQuery(self.query)
             response = f"{self.response}\n```markdown\n{result}\n```"
-            print(response)
             return {
                 "question": self.question,
                 "response": response,

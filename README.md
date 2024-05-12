@@ -30,11 +30,13 @@ O ShopBot é mais do que apenas um assistente de compras, é o seu guia pessoal 
 10. Liste os produtos e as lojas que possuem o menor preço
 11. liste as 2 lojas que possuem o menor preço para o produto feijão
  
+## Observação:
+Todas as informações obtidas para popular esta base de dados são dados púbilcos encontrados na internet utilizando a IA Generativa do Google Gemini.
+
 ## Exemplos de resultado das interação:
 ![lista todas as minhas compras](./images/lista-todas-as-minhas-compras.png)
 ![liste as minhas compras com o nome da loja, produto, valor e data da compra](./images/liste-as-minhas-commpras-resumo.png)
 ![liste as minhas compras deste mês com o nome da loja, produto, valor e data da compra somente os produtos da categoria Grãos](./images/liste-as-minhas-commpras-resumo-graos.png)
-
 
 ## Configurando o ambiente para executar o projeto
 
@@ -89,7 +91,6 @@ Aqui estão as instruções passo a passo para criar a variável de ambiente nos
 **Observação**: Por favor, substitua "seu_token" pelo valor do seu token. Note que essas alterações farão com que a variável de ambiente esteja disponível apenas para o usuário atual. Se precisar que esteja disponível para todos os usuários, você precisará ajustar as instruções de acordo.
 
 ## 1 Construindo o banco de dados utilizando prompt para ser executado no Google AI Studio
-**Observação**: Todas as informações obtidas para popular esta base de dados são dados púbilcos encontrados na internet utilizando a IA Generativa do Google Gemini.
 
 ### 1.1 Parâmetros configuração Gemini Studio 
 > Modelo: Gemini 1.5 <span style="color:red;">PREVIEW</span> Pro
