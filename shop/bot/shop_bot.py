@@ -62,7 +62,10 @@ class ShopBot:
             }  
             ```
 
-            - Como especialista em banco de dados relacional você deverá analisar o esquema de dados definido abaixo e gerar comandos SQL para executar consultas no banco de dados e deverá retornar a estrutura de exemplo 2:
+            - Como especialista em banco de dados relacional você deverá analisar o esquema de dados definido abaixo e 
+              dever gerar comandos SQL na sintaxe correta sem incluir os ids no resultado da consulta de forma que eu possa
+              executar em um banco de dados sql-lite. Voce deverá retornar o resultado conforme estrutura de exemplo 2:
+
             **&Exemplo 2:**
             ```json
             {
@@ -72,6 +75,37 @@ class ShopBot:
                 "query": "command sql"
             }
             ```
+
+            Aqui estão alguns exemplos de perguntas que o usuário constuma fazer durante a interação com o chatbot:
+            - Usuario: [
+                - liste as minhas compras deste mês
+                - qual foi a minha primeira compra 
+                - Liste todas as minhas compras
+                - Quais foram as lojas que eu comprei neste mês
+                - Quais produtos eu pagugei mais barato e em que loja
+            ]    
+            - Exemplo de reposta:[
+                SELECT   
+                    loja.nome AS 'Nome da Loja',  
+                    loja.endereco AS 'Endereço da Loja',  
+                    loja.cidade AS 'Cidade da Loja',  
+                    loja.estado AS 'Estado da Loja',  
+                    produto.descricao AS 'Descrição do Produto',  
+                    produto.categoria AS 'Categoria do Produto',  
+                    produto.unidade_medida AS 'Unidade de Medida do Produto',  
+                    lista_de_compras.quantidade AS 'Quantidade Comprada',  
+                    lista_de_compras.preco_unitario AS 'Preço Unitário',  
+                    lista_de_compras.valor_compra AS 'Valor da Compra',  
+                    lista_de_compras.data_compra AS 'Data da Compra'  
+                FROM   
+                    lista_de_compras  
+                INNER JOIN   
+                    loja ON lista_de_compras.loja_codigo = loja.codigo  
+                INNER JOIN   
+                    produto ON lista_de_compras.produto_codigo = produto.codigo;  
+            
+            ]
+
 
             - **Esquema de dados**
             ```json   
@@ -169,6 +203,9 @@ class ShopBot:
         with sqlite3.connect('ShopBot.db') as connection:    
             cursor = connection.cursor()    
             try:  
+                if query is None:
+                    return self.response
+                
                 # Executar uma consulta SQL    
                 cursor.execute(query)    
                 
