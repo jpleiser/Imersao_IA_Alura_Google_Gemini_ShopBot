@@ -33,6 +33,7 @@ O ShopBot é mais do que apenas um assistente de compras, é o seu guia pessoal 
 ## Exemplos de resultado das interação:
 ![lista todas as minhas compras](./images/lista-todas-as-minhas-compras.png)
 ![liste as minhas compras com o nome da loja, produto, valor e data da compra](./images/liste-as-minhas-commpras-resumo.png)
+![liste as minhas compras deste mês com o nome da loja, produto, valor e data da compra somente os produtos da categoria Grãos](./images/liste-as-minhas-commpras-resumo-graos.png)
 
 
 ## Configurando o ambiente para executar o projeto
