@@ -30,9 +30,15 @@ O ShopBot é mais do que apenas um assistente de compras, é o seu guia pessoal 
 10. Liste os produtos e as lojas que possuem o menor preço
 11. liste as 2 lojas que possuem o menor preço para o produto feijão
  
+## Exemplos de resultado das interação:
+![lista todas as minhas compras](./images/lista-todas-as-minhas-compras.png)
+![liste as minhas compras com o nome da loja, produto, valor e data da compra](./images/liste-as-minhas-commpras-resumo.png)
 
 
 ## Configurando o ambiente para executar o projeto
+
+### Linkedin: 
+https://www.linkedin.com/in/jpleiser/
 
 ### intalação do Visual Studio Code
 https://code.visualstudio.com/Download

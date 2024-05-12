@@ -45,6 +45,7 @@ def read_root(request: Request, response: Response):
 @app.get("/api/welcome", response_class=HTMLResponse)    
 def read_root(request: Request, response: Response):  
     try:  
+        response = None
         shop_bot:ShopBot = None  
         # Verificando se o usuário já possui uma sessão ativa      
         session_id = request.headers.get('user-session', None)      
@@ -52,7 +53,7 @@ def read_root(request: Request, response: Response):
             session_id = str(uuid.uuid4())    
             shop_bot = ShopBot()    
             sessions[session_id] = shop_bot  
-            shop_bot.welcome()    
+            response = shop_bot.welcome()    
         else:    
             shop_bot = sessions.get(session_id, None)      
         if shop_bot is None:  
@@ -60,8 +61,8 @@ def read_root(request: Request, response: Response):
   
         return JSONResponse(  
             content={
-                "question": "Bom dia",
-                "response": "Seja bem vindo",
+                "question": "WELCOME",
+                "response": response,
                 "status": 200  
             },  
             headers={"user-session": session_id}  

@@ -262,16 +262,39 @@ class ShopBot:
 
     def welcome(self):
 
-        self.convo.send_message("Bom dia.")
-        response = self.__clean_json(self.convo.last.text)        
-        print(response)
+        welcome:str = """
+            👋 Olá e seja bem-vindo ao ShopBot! 🤖💼 Seu assistente pessoal para compras inteligentes e econômicas. Estou aqui para ajudá-lo a encontrar as melhores ofertas 🛍️, comparar preços 💰 e analisar seu histórico de compras 📊 para que você possa tomar decisões de compra mais informadas.  
+            
+            Meu objetivo é tornar suas compras mais eficientes e econômicas. Com a tecnologia avançada de IA Generativa Gemini, posso responder suas perguntas de maneira natural e intuitiva. Quer saber onde encontrar o melhor preço para um produto? 🎯 É só perguntar! Eu posso comparar preços em várias lojas, permitindo que você economize tempo ⏳ e dinheiro 💵.  
+            
+            Além disso, posso analisar seus padrões de gastos 💳 e ajudá-lo a identificar áreas onde você pode economizar. Eu monitoro as flutuações de preços e posso até prever o melhor momento para você comprar um produto específico 📈.  
+            
+            Aqui estão alguns exemplos de perguntas que você pode me fazer:  
+            
+            - Liste os preços da loja atacadão 🏪.  
+            - Liste a loja onde o café é mais barato ☕.  
+            - Liste as minhas compras deste mês 📅.  
+            - Qual foi a minha primeira compra 🛒?  
+            - Liste todas as minhas compras 📝.  
+            - Sumarize minhas compras por mês e ano 🗓️.  
+            - Quais foram as lojas que eu comprei neste mês 🏬?  
+            - Quais produtos eu paguei mais barato e em que loja 💲🏬?  
+            - Qual loja possui o menor preço do produto arroz 🍚?  
+            - Liste os produtos e as lojas que possuem o menor preço 🔍.  
+            - Liste as 2 lojas que possuem o menor preço para o produto feijão 🍛.  
+            
+            Estou aqui para ajudá-lo a fazer compras inteligentes. Vamos começar? 🚀
+        """
+        # self.convo.send_message("Bom dia.")
+        # response = self.__clean_json(self.convo.last.text)        
+        # print(response)
 
-        objeto_json = json.loads(response)  
+        # objeto_json = json.loads(response)  
 
-        self.__refresh_data(objeto_json)
+        # self.__refresh_data(objeto_json)
 
-        return self.response
-
+        # return self.response
+        return welcome
 
     def send_message(self, question:str):
 
