@@ -6,6 +6,7 @@
     <meta charset="ISO-8859-1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         body {
             background-color: #e9ecef;
@@ -79,7 +80,7 @@
                 });
         }
 
-        window.onload = callApi;    
+        window.onload = callApi;      
     </script>
 </head>
 
@@ -96,13 +97,40 @@
     </div>
 
     <script>
+        function extractMarkdown(text) {
+            let regex = /```markdown([\s\S]*?)```/g;
+            let match;
+            let index = 0;
+            let result = [];
+
+            while (match = regex.exec(text)) {
+                if (match.index > index) {
+                    result.push({
+                        type: 'text',
+                        value: text.substring(index, match.index).trim()
+                    });
+                }
+                result.push({
+                    type: 'mark',
+                    value: match[1].trim()
+                });
+                index = match.index + match[0].length;
+            }
+            if (index < text.length) {
+                result.push({
+                    type: 'text',
+                    value: text.substring(index).trim()
+                });
+            }
+            return result;
+        }
+
         document.addEventListener(
             "DOMContentLoaded",
             (event) => {
                 function sendMessage() {
                     var question = document.getElementById("question").value;
                     if (question) {
-                        alert("Sessão: " + user_session)
                         fetch("api/send-message", {
                             method: "POST",
                             headers: {
@@ -135,18 +163,34 @@
 
                     var newTitle = document.createElement("h5");
                     newTitle.classList.add("card-title");
-                    newTitle.textContent = isUser ? "User Input" : "Chatbot Response";
-
-                    var newText = document.createElement("p");
-                    newText.classList.add("card-text");
-                    newText.textContent = JSON.stringify(data);
+                    newTitle.textContent = isUser ? "Usuário" : "ShopBot";
 
                     newBody.appendChild(newTitle);
-                    newBody.appendChild(newText);
-                    newDiv.appendChild(newBody);
 
+                    // Verifica se o atributo 'response' existe e o utiliza      
+                    if (!isUser && data.response) {
+                        var markdownParts = extractMarkdown(data.response); // Chama a função `extractMarkdown`    
+                        for (var part of markdownParts) {
+                            var newText = document.createElement(part.type === 'text' ? "p" : "div");
+                            newText.classList.add("card-text");
+                            if (part.type === 'text') {
+                                newText.textContent = part.value.replace(/"/g, '');
+                            } else {
+                                newText.innerHTML = marked.parse(part.value); // Usa a biblioteca 'marked' para renderizar o Markdown    
+                            }
+                            newBody.appendChild(newText);
+                        }
+                    } else {
+                        var newText = document.createElement("p");
+                        newText.classList.add("card-text");
+                        newText.textContent = data;
+                        newBody.appendChild(newText);
+                    }
+
+                    newDiv.appendChild(newBody);
                     document.getElementById("chatArea").appendChild(newDiv);
                 }
+
 
                 document.querySelector(".btn-primary").addEventListener("click", sendMessage);
 
@@ -156,7 +200,7 @@
                     }
                 });
             }
-        );    
+        );      
     </script>
 </body>
 

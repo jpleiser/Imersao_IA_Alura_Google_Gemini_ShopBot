@@ -130,7 +130,7 @@ class ShopBot:
     
     def __send_message_rag(self,question:str):
         
-        system_instruction_rag = "Você é um asssitente atencioso e sabe responder de forma educada a pergunta do usuário."
+        system_instruction_rag = "você é um web-design com profundo conhecimento em html, css3 e botstrap, quero que Analise os dados fornecido pelo usuário e converta os dados para um formato html para uma melhor visualização."
 
         model_rag = genai.GenerativeModel(model_name="gemini-1.5-pro-latest",
                                     generation_config=self.generation_config,
@@ -163,12 +163,12 @@ class ShopBot:
 
 
     def __executeQuery(self, query:str) -> str:  
-        markdown_result = ""  
+        markdown_result = "" 
 
         # Conecte-se ao banco de dados SQLite (ou crie se não existir)    
         with sqlite3.connect('ShopBot.db') as connection:    
             cursor = connection.cursor()    
-            try:    
+            try:  
                 # Executar uma consulta SQL    
                 cursor.execute(query)    
                 
@@ -186,8 +186,9 @@ class ShopBot:
                 
                 # Adicionar dados ao resultado markdown  
                 for row in data:  
-                    markdown_result += " | ".join(str(item) for item in row) + "\n"  
-                    
+                    markdown_result += " | ".join(str(item) for item in row) + "\n"                  
+                # self.__send_message_rag(f"dados do usuário para renderização:\n{self.response}\n{markdown_result}")
+
             except sqlite3.OperationalError as e:   
                 print(f"An error occurred: {e}")
 
@@ -211,6 +212,7 @@ class ShopBot:
 
         return self.response
 
+
     def send_message(self, question:str):
 
         self.convo.send_message(question)
@@ -229,10 +231,11 @@ class ShopBot:
 
         elif self.intent == "SQL":
             result = self.__executeQuery(self.query)
-            # prompt = f"{question}\n Dados:\n{resulte}"
+            response = f"{self.response}\n```markdown\n{result}\n```"
+            print(response)
             return {
                 "question": self.question,
-                "response": self.response+"\n"+result,
+                "response": response,
                 "status": 200
             }
         else:
