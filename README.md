@@ -18,15 +18,19 @@ O ShopBot é mais do que apenas um assistente de compras, é o seu guia pessoal 
 > **Observação:** O ShopBot é a ferramenta perfeita para qualquer comprador moderno. Seja você um caçador de ofertas experiente ou um comprador casual, o ShopBot fornece as informações e ferramentas que você precisa para fazer compras inteligentes. Experimente o ShopBot e descubra uma maneira totalmente nova de fazer compras!
 
 ## Exemplos de interação:
-1. liste os preços da loja atacadão.
-2. A loja com o café é mais barato:
+1. liste os preços da loja atacadão
+2. liste a loja com o café é mais barato
 3. liste as minhas compras deste mês
 4. qual foi a minha primeira compra 
 5. Liste todas as minhas compras
 6. sumarize minhas compras por mes e ano
 7. Quais foram as lojas que eu comprei neste mês
 8. Quais produtos eu paguei mais barato e em que loja
+9. Qual loja possui o menor preço do produto arroz
+10. Liste os produtos e as lojas que possuem o menor preço
+11. liste as 2 lojas que possuem o menor preço para o produto feijão
  
+
 
 ## Configurando o ambiente para executar o projeto
 

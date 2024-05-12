@@ -77,6 +77,7 @@ class ShopBot:
             ```
 
             Aqui estão alguns exemplos de perguntas que o usuário constuma fazer durante a interação com o chatbot:
+            exemplos de consulta na lista de compras:
             - Usuario: [
                 - liste as minhas compras deste mês
                 - qual foi a minha primeira compra 
@@ -105,7 +106,29 @@ class ShopBot:
                     produto ON lista_de_compras.produto_codigo = produto.codigo;  
             
             ]
-
+            Exemplos de consulta de preços produto loja:
+            - Usuario: [
+                - Qual loja possui o menor preço do produto arroz
+                - Liste os produtos e as lojas que possuem o menor preço
+                - liste as 2 lojas que possuem o menor preço para o produto feijão
+            ]
+            - Exemplo de reposta:[
+                SELECT   
+                    loja.nome AS Loja,   
+                    loja.endereco AS Endereco,   
+                    loja.cidade AS Cidade,   
+                    loja.estado AS Estado,   
+                    produto.descricao AS Produto,   
+                    produto.categoria AS Categoria,   
+                    produto.unidade_medida AS Unidade,   
+                    preco_do_produto_na_loja.preco AS Preco  
+                FROM   
+                    preco_do_produto_na_loja  
+                INNER JOIN   
+                    loja ON preco_do_produto_na_loja.loja_codigo = loja.codigo  
+                INNER JOIN   
+                    produto ON preco_do_produto_na_loja.produto_codigo = produto.codigo;              
+            ]
 
             - **Esquema de dados**
             ```json   

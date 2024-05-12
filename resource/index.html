@@ -80,7 +80,7 @@
                 });
         }
 
-        window.onload = callApi;      
+        window.onload = callApi;        
     </script>
 </head>
 
@@ -125,6 +125,11 @@
             return result;
         }
 
+        function scrollToBottom() {
+            var chatArea = document.getElementById("resultArea");
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
         document.addEventListener(
             "DOMContentLoaded",
             (event) => {
@@ -167,16 +172,16 @@
 
                     newBody.appendChild(newTitle);
 
-                    // Verifica se o atributo 'response' existe e o utiliza      
+                    // Verifica se o atributo 'response' existe e o utiliza        
                     if (!isUser && data.response) {
-                        var markdownParts = extractMarkdown(data.response); // Chama a função `extractMarkdown`    
+                        var markdownParts = extractMarkdown(data.response); // Chama a função `extractMarkdown`      
                         for (var part of markdownParts) {
                             var newText = document.createElement(part.type === 'text' ? "p" : "div");
                             newText.classList.add("card-text");
                             if (part.type === 'text') {
                                 newText.textContent = part.value.replace(/"/g, '');
                             } else {
-                                newText.innerHTML = marked.parse(part.value); // Usa a biblioteca 'marked' para renderizar o Markdown    
+                                newText.innerHTML = marked.parse(part.value); // Usa a biblioteca 'marked' para renderizar o Markdown      
                             }
                             newBody.appendChild(newText);
                         }
@@ -189,6 +194,8 @@
 
                     newDiv.appendChild(newBody);
                     document.getElementById("chatArea").appendChild(newDiv);
+
+                    scrollToBottom();
                 }
 
 
@@ -200,7 +207,7 @@
                     }
                 });
             }
-        );      
+        );        
     </script>
 </body>
 
