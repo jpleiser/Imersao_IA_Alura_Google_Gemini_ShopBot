@@ -611,5 +611,3 @@ Você é um assistente pessoal atencioso especializado em banco de dados relacio
     FOREIGN KEY (loja_produto_preco_loja_codigo, loja_produto_preco_produto_codigo) REFERENCES loja_produto_preco(loja_codigo, produto_codigo)
     );
 ````
-
-### 1.14 Prompt de Aperfeiçoamento para Implementação do RAG.
