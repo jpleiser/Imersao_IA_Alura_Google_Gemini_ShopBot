@@ -64,7 +64,9 @@ class ShopBot:
 
             - Como especialista em banco de dados relacional você deverá analisar o esquema de dados definido abaixo e 
               dever gerar comandos SQL na sintaxe correta sem incluir os ids no resultado da consulta de forma que eu possa
-              executar em um banco de dados sql-lite. Voce deverá retornar o resultado conforme estrutura de exemplo 2:
+              executar em um banco de dados sql-lite.
+              Para campos do tipo Text quero que utilize o operador like para restringir a consulta na clausula where.
+              Voce deverá retornar o resultado conforme estrutura de exemplo 2:
 
             **&Exemplo 2:**
             ```json
@@ -133,28 +135,119 @@ class ShopBot:
 
             ]
 
-            
-            Exemplos de consulta de menor, maior, média de preços produto loja:
+            Exemplo de consulta para eu saber quanto vou gastar para comprar determinados produtos
             - Usuario: [
-                - Em que loja eu posso fazer compras e pagar o menor preço para o arroz, feijão e papel higiênico
+                Se eu comprar arroz, feijão, banana quanto eu vou gastar
+                Se eu comprar azeite, sal, carne quanto eu vou gastar
             ]
             - Exemplo de reposta:[
-                SELECT   
-                        loja.nome AS Loja,   
-                        loja.endereco AS Endereco,   
-                        loja.cidade AS Cidade,   
-                        loja.estado AS Estado,   
-                        produto.descricao AS Produto,   
-                        produto.categoria AS Categoria,   
-                        produto.unidade_medida AS Unidade,   
-                        loja_produto_preco.preco AS Preco  
-                FROM   
-                        loja_produto_preco 
-                        INNER JOIN   
-                                loja ON loja_produto_preco.loja_codigo = loja.codigo  
-                        INNER JOIN   
-                                produto ON loja_produto_preco.produto_codigo = produto.codigo;              
+                SELECT 
+                    sum(loja_produto_preco.preco) AS preco
+                FROM loja_produto_preco
+                    INNER JOIN (
+                        SELECT 
+                                menor_preco.produto_codigo,
+                                min(menor_preco.preco) AS preco
+                        FROM 
+                                loja_produto_preco AS menor_preco
+                        GROUP BY
+                                menor_preco.produto_codigo
+                    ) AS menor_preco
+                    ON 
+                        loja_produto_preco.produto_codigo = menor_preco.produto_codigo
+                        AND
+                        loja_produto_preco.preco = menor_preco.preco
+                    INNER JOIN loja 
+                        ON loja_produto_preco.loja_codigo = loja.codigo  
+                    INNER JOIN produto 
+                        ON loja_produto_preco.produto_codigo = produto.codigo  
+                WHERE  
+                    (
+                        produto.descricao like 'arroz' 
+                        OR
+                        produto.descricao like 'feijão'
+                        OR 
+                        produto.descricao like 'banana'
+                    )
+            ]
 
+            Exemplos de consulta de menor e maior preços produto loja:
+            - Usuario: [
+                - Em que loja eu posso fazer compras e pagar o menor preço para o arroz, feijão e papel higiênico?
+                - Em quais lojas preço do arroz, feijão e papel higiênico é mais caro?
+            ]
+            - Exemplo de reposta:[
+                SELECT 
+                    loja.nome as Loja,
+                    loja.endereco as Endereco,
+                    loja.cidade as Cidade,
+                    loja.estado as Estado,
+                    produto.descricao as Produto,
+                    produto.categoria as Categoria,
+                    loja_produto_preco.preco as preco
+                FROM loja_produto_preco
+                    INNER JOIN (
+                        SELECT 
+                                menor_preco.produto_codigo,
+                                min(menor_preco.preco) AS preco
+                        FROM 
+                                loja_produto_preco AS menor_preco
+                        GROUP BY
+                                menor_preco.produto_codigo
+                    ) AS menor_preco
+                    ON 
+                        loja_produto_preco.produto_codigo = menor_preco.produto_codigo
+                        AND
+                        loja_produto_preco.preco = menor_preco.preco
+                    INNER JOIN loja 
+                        ON loja_produto_preco.loja_codigo = loja.codigo  
+                    INNER JOIN produto 
+                        ON loja_produto_preco.produto_codigo = produto.codigo  
+                WHERE  
+                    (
+                        Produto like 'arroz' 
+                        OR
+                        Produto like 'feijão'
+                        OR 
+                        Produto like 'papel higiênico'
+                    );
+                -- 
+                SELECT 
+                    loja.nome as Loja,
+                    loja.endereco as Endereco,
+                    loja.cidade as Cidade,
+                    loja.estado as Estado,
+                    produto.descricao as Produto,
+                    produto.categoria as Categoria,
+                    loja_produto_preco.preco as preco
+                FROM loja_produto_preco
+                    INNER JOIN (
+                        SELECT 
+                                menor_preco.produto_codigo,
+                                max(menor_preco.preco) AS preco
+                        FROM 
+                                loja_produto_preco AS menor_preco
+                        GROUP BY
+                                menor_preco.produto_codigo
+                    ) AS menor_preco
+                    ON 
+                        loja_produto_preco.produto_codigo = menor_preco.produto_codigo
+                        AND
+                        loja_produto_preco.preco = menor_preco.preco
+                    INNER JOIN loja 
+                        ON loja_produto_preco.loja_codigo = loja.codigo  
+                    INNER JOIN produto 
+                        ON loja_produto_preco.produto_codigo = produto.codigo
+                WHERE
+                    (
+                        Produto like 'feijão' 
+                        OR
+                        Produto like 'carne'
+                        OR 
+                        Produto like 'papel higiênico'
+                    );                              
+                ;
+                --  
             ]
 
             - **Esquema de dados**
@@ -168,38 +261,47 @@ class ShopBot:
             ```
             ```sql
                 CREATE TABLE loja (
-                codigo INTEGER PRIMARY KEY,
-                nome TEXT,
-                endereco TEXT,
-                cidade TEXT,
-                estado TEXT
+                    codigo INTEGER PRIMARY KEY,
+                    nome TEXT,
+                    endereco TEXT,
+                    cidade TEXT,
+                    estado TEXT
                 );
 
                 CREATE TABLE produto (
-                codigo INTEGER PRIMARY KEY,
-                descricao TEXT,
-                categoria TEXT,
-                unidade_medida TEXT
+                    codigo INTEGER PRIMARY KEY,
+                    descricao TEXT,
+                    categoria TEXT,
+                    unidade_medida TEXT
                 );
 
                 CREATE TABLE loja_produto_preco (
-                loja_codigo INTEGER,
-                produto_codigo INTEGER,
-                preco REAL,
-                PRIMARY KEY (loja_codigo, produto_codigo),
-                FOREIGN KEY (loja_codigo) REFERENCES loja(codigo),
-                FOREIGN KEY (produto_codigo) REFERENCES produto(codigo)
+                    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                    loja_codigo INTEGER,
+                    produto_codigo INTEGER,
+                    preco REAL, /**
+                    Regras:
+                        1. Sempre retorne o preço em R$  
+                    **/
+                    FOREIGN KEY (loja_codigo) REFERENCES loja(codigo),
+                    FOREIGN KEY (produto_codigo) REFERENCES produto(codigo)
                 );
 
                 CREATE TABLE lista_compras (
-                id INTEGER PRIMARY KEY,
-                quantidade DECIMAL(10,4),
-                preco_unitario REAL,
-                valor_compra REAL,
-                data_compra DATE,
-                loja_produto_preco_loja_codigo INTEGER,
-                loja_produto_preco_produto_codigo INTEGER,
-                FOREIGN KEY (loja_produto_preco_loja_codigo, loja_produto_preco_produto_codigo) REFERENCES loja_produto_preco(loja_codigo, produto_codigo)
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    quantidade DECIMAL(10,4),
+                    preco_unitario REAL, /**
+                    Regras:
+                        1. Sempre retorne o preço em R$  
+                    **/
+                    valor_compra REAL, /**
+                    Regras:
+                        1. Sempre retorne o preço em R$  
+                    **/
+                    data_compra DATE,
+                    loja_produto_preco_loja_codigo INTEGER,
+                    loja_produto_preco_produto_codigo INTEGER,
+                    FOREIGN KEY (loja_produto_preco_loja_codigo, loja_produto_preco_produto_codigo) REFERENCES loja_produto_preco(loja_codigo, produto_codigo)
                 );
             ````
         """

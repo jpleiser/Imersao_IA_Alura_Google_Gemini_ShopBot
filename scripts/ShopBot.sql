@@ -14,16 +14,16 @@ CREATE TABLE produto (
 );
 
 CREATE TABLE loja_produto_preco (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, 
   loja_codigo INTEGER,
   produto_codigo INTEGER,
   preco REAL,
-  PRIMARY KEY (loja_codigo, produto_codigo),
   FOREIGN KEY (loja_codigo) REFERENCES loja(codigo),
   FOREIGN KEY (produto_codigo) REFERENCES produto(codigo)
 );
 
 CREATE TABLE lista_compras (
-  id INTEGER PRIMARY KEY,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   quantidade DECIMAL(10,4),
   preco_unitario REAL,
   valor_compra REAL,

@@ -29,6 +29,8 @@ O ShopBot é mais do que apenas um assistente de compras, é o seu guia pessoal 
 9. Qual loja possui o menor preço do produto arroz
 10. Liste os produtos e as lojas que possuem o menor preço
 11. liste as 2 lojas que possuem o menor preço para o produto feijão
+12. Em que loja eu posso fazer compras e pagar o menor preço para o arroz, feijão e papel higiênico
+13. Em quais lojas preço do arroz, feijão e papel higiênico é mais caro
  
 ## Observação:
 Todas as informações obtidas para popular esta base de dados são dados púbilcos encontrados na internet utilizando a IA Generativa do Google Gemini.
@@ -37,6 +39,12 @@ Todas as informações obtidas para popular esta base de dados são dados púbil
 ![lista todas as minhas compras](./images/lista-todas-as-minhas-compras.png)
 ![liste as minhas compras com o nome da loja, produto, valor e data da compra](./images/liste-as-minhas-commpras-resumo.png)
 ![liste as minhas compras deste mês com o nome da loja, produto, valor e data da compra somente os produtos da categoria Grãos](./images/liste-as-minhas-commpras-resumo-graos.png)
+![](./images/Melhor-preco.png)
+![](./images/Melhor-preco-endereco.png)
+![](./images/Maior-e-menor-preco.png)
+![](./images/calcula-valor-da-compra-e-indica-em quais-lojas.png)
+
+
 
 ## Configurando o ambiente para executar o projeto
 
@@ -147,16 +155,16 @@ CREATE TABLE produto (
   unidade_medida TEXT
 );
 
-CREATE TABLE preco_do_produto_na_loja (
+CREATE TABLE loja_produto_preco (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, 
   loja_codigo INTEGER,
   produto_codigo INTEGER,
-  preco REAL NOT NULL,
-  PRIMARY KEY (loja_codigo, produto_codigo),
-  FOREIGN KEY (loja_codigo) REFERENCES loja (codigo),
-  FOREIGN KEY (produto_codigo) REFERENCES produto (codigo)
+  preco REAL,
+  FOREIGN KEY (loja_codigo) REFERENCES loja(codigo),
+  FOREIGN KEY (produto_codigo) REFERENCES produto(codigo)
 );
 
-CREATE TABLE lista_de_compras (
+CREATE TABLE lista_compras (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   quantidade DECIMAL(10, 4) NOT NULL,
   preco_unitario REAL NOT NULL,
@@ -615,16 +623,16 @@ Você é um assistente pessoal atencioso especializado em banco de dados relacio
     );
 
     CREATE TABLE loja_produto_preco (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
     loja_codigo INTEGER,
     produto_codigo INTEGER,
     preco REAL,
-    PRIMARY KEY (loja_codigo, produto_codigo),
     FOREIGN KEY (loja_codigo) REFERENCES loja(codigo),
     FOREIGN KEY (produto_codigo) REFERENCES produto(codigo)
     );
 
     CREATE TABLE lista_compras (
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
     quantidade DECIMAL(10,4),
     preco_unitario REAL,
     valor_compra REAL,
