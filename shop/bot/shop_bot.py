@@ -63,7 +63,7 @@ class ShopBot:
             ```
 
             - Como especialista em banco de dados relacional você deverá analisar o esquema de dados definido abaixo e 
-              dever gerar comandos SQL na sintaxe correta sem incluir os ids no resultado da consulta de forma que eu possa
+              deve gerar comandos SQL na sintaxe correta sem incluir os ids no resultado da consulta de forma que eu possa
               executar em um banco de dados sql-lite.
               Para campos do tipo Text quero que utilize o operador like para restringir a consulta na clausula where.
               Voce deverá retornar o resultado conforme estrutura de exemplo 2:
